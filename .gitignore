@@ -1,6 +1,8 @@
 *~
 *.so
+*.so.*
 *.cmake
+*.pc
 CMakeCache.txt
 CMakeFiles
 Makefile
