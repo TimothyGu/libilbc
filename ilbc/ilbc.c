@@ -24,6 +24,8 @@
 #include "decode.h"
 #include <stdlib.h>
 
+/* Export all functions defined in this file. */
+#pragma GCC visibility push(default)
 
 WebRtc_Word16 WebRtcIlbcfix_EncoderAssign(iLBC_encinst_t **iLBC_encinst, WebRtc_Word16 *ILBCENC_inst_Addr, WebRtc_Word16 *size) {
   *iLBC_encinst=(iLBC_encinst_t*)ILBCENC_inst_Addr;
