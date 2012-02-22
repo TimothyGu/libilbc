@@ -1,0 +1,42 @@
+Source: libilbc
+Priority: extra
+Maintainer: Jeroen Dekkers <jeroen@dekkers.ch>
+Build-Depends: debhelper (>= 9), dpkg-dev (>= 1.16.1), cmake
+Standards-Version: 3.9.2
+Section: libs
+Homepage: https://github.com/dekkers/libilbc
+Vcs-Git: git://github.com/dekkers/libilbc.git
+Vcs-Browser: https://github.com/dekkers/libilbc
+
+Package: libilbc-dev
+Section: libdevel
+Architecture: any
+Depends: libilbc1 (= ${binary:Version}), ${misc:Depends}
+Multi-Arch: same
+Description: Internet Low Bitrate Codec (iLBC) library (development files)
+ Free speech codec suitable for robust voice communication over
+ IP. The codec is designed for narrow band speech and results in a
+ payload bit rate of 13.33 kbit/s with an encoding frame length of 30
+ ms and 15.20 kbps with an encoding length of 20 ms. The iLBC codec
+ enables graceful speech quality degradation in the case of lost
+ frames, which occurs in connection with lost or delayed IP
+ packets. iLBC is specified by RFC 3951.
+ .
+ This package contains the development files.
+
+Package: libilbc1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: Internet Low Bitrate Codec (iLBC) library
+ Free speech codec suitable for robust voice communication over
+ IP. The codec is designed for narrow band speech and results in a
+ payload bit rate of 13.33 kbit/s with an encoding frame length of 30
+ ms and 15.20 kbps with an encoding length of 20 ms. The iLBC codec
+ enables graceful speech quality degradation in the case of lost
+ frames, which occurs in connection with lost or delayed IP
+ packets. iLBC is specified by RFC 3951.
+ .
+ This package contains the shared library.
