@@ -7,7 +7,6 @@ add_library(ilbc SHARED ${ilbc_source_files})
 set_target_properties(ilbc PROPERTIES VERSION 1.1.1 SOVERSION 1)
 
 set(CMAKE_C_FLAGS "-O2 -Wall -Wextra -Werror -fvisibility=hidden -Wno-unused-parameter")        ## Optimize
-set(CMAKE_EXE_LINKER_FLAGS "-s")  ## Strip binary
 
 set(prefix "${CMAKE_INSTALL_PREFIX}")
 set(exec_prefix "\${prefix}")
