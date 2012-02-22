@@ -36,6 +36,9 @@
 #include "swap_bytes.h"
 #endif
 
+/* Export all functions defined in this file. */
+#pragma GCC visibility push(default)
+
 /*----------------------------------------------------------------*
  *  main encoder function
  *---------------------------------------------------------------*/

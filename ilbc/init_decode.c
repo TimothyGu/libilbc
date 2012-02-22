@@ -19,6 +19,9 @@
 #include "defines.h"
 #include "constants.h"
 
+/* Export all functions defined in this file. */
+#pragma GCC visibility push(default)
+
 /*----------------------------------------------------------------*
  *  Initiation of decoder instance.
  *---------------------------------------------------------------*/
