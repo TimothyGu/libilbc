@@ -4,7 +4,11 @@ test_big_endian(WEBRTC_BIG_ENDIAN)
 include_directories(. ilbc/interface signal_processing/include)
 file(GLOB ilbc_source_files ilbc/*.c signal_processing/*.c)
 add_library(ilbc SHARED ${ilbc_source_files})
+add_library(ilbc-static STATIC ${ilbc_source_files})
 set_target_properties(ilbc PROPERTIES VERSION 1.1.1 SOVERSION 1)
+set_target_properties(ilbc PROPERTIES CLEAN_DIRECT_OUTPUT 1)
+set_target_properties(ilbc-static PROPERTIES OUTPUT_NAME "ilbc")
+set_target_properties(ilbc-static PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
 set(CMAKE_C_FLAGS "-O2 -Wall -Wextra -Werror -fvisibility=hidden -Wno-unused-parameter")        ## Optimize
 
@@ -15,4 +19,4 @@ set(includedir "\${prefix}/include")
 configure_file(libilbc.pc.in libilbc.pc @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libilbc.pc DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig)
 install(FILES ilbc/interface/ilbc.h DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
-install(TARGETS ilbc DESTINATION lib)
+install(TARGETS ilbc ilbc-static DESTINATION lib)
