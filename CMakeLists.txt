@@ -26,7 +26,7 @@ set_target_properties(ilbc PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 set_target_properties(ilbc-static PROPERTIES OUTPUT_NAME "ilbc")
 set_target_properties(ilbc-static PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
-set(CMAKE_C_FLAGS "-O2 -Wall -Wextra -Werror -fvisibility=hidden -Wno-unused-parameter")        ## Optimize
+set(CMAKE_C_FLAGS "-O2 -Wall -Wextra -Werror -fvisibility=hidden -Wno-unused-parameter -fno-strict-aliasing")
 
 set(prefix "${CMAKE_INSTALL_PREFIX}")
 set(exec_prefix "\${prefix}")
