@@ -4,19 +4,21 @@
 AC_INIT([libilbc], [1.1.1], [])
 AC_CONFIG_AUX_DIR(.)
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([tar-ustar])
+AM_INIT_AUTOMAKE([tar-ustar dist-xz])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AC_CONFIG_HEADERS([config.h])
-AM_MAINTAINER_MODE
 
 # Cross compiling support
 AC_CANONICAL_HOST
 
+# Setup for libtool
+AC_PROG_LIBTOOL
+
 # Checks for programs.
 AC_PROG_CC
 
-# Setup for libtool
-AC_PROG_LIBTOOL
+DOLT
+
 AC_SUBST(LIBTOOL_DEPS)
 
 # soname version to use
