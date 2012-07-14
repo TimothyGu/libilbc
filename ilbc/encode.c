@@ -45,7 +45,7 @@
 
 void WebRtcIlbcfix_EncodeImpl(
     WebRtc_UWord16 *bytes,     /* (o) encoded data bits iLBC */
-    WebRtc_Word16 *block,     /* (i) speech vector to encode */
+    const WebRtc_Word16 *block, /* (i) speech vector to encode */
     iLBC_Enc_Inst_t *iLBCenc_inst /* (i/o) the general encoder
                                      state */
                           ){

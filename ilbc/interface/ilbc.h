@@ -147,7 +147,7 @@ extern "C" {
    */
 
   WebRtc_Word16 WebRtcIlbcfix_Encode(iLBC_encinst_t *iLBCenc_inst,
-				     WebRtc_Word16 *speechIn,
+				     const WebRtc_Word16 *speechIn,
 				     WebRtc_Word16 len,
 				     WebRtc_Word16 *encoded);
 
@@ -193,7 +193,7 @@ extern "C" {
    */
 
   WebRtc_Word16 WebRtcIlbcfix_Decode(iLBC_decinst_t *iLBCdec_inst,
-				     WebRtc_Word16* encoded,
+				     const WebRtc_Word16* encoded,
 				     WebRtc_Word16 len,
 				     WebRtc_Word16 *decoded,
 				     WebRtc_Word16 *speechType);
@@ -422,11 +422,11 @@ extern "C" {
   WebRtc_Word16 WebRtcIlbcfix_InitEncode(iLBC_Enc_Inst_t *iLBCenc_inst,
 					 WebRtc_Word16 mode);
   void WebRtcIlbcfix_DecodeImpl(WebRtc_Word16 *decblock,
-				WebRtc_UWord16 *bytes,
+				const WebRtc_UWord16 *bytes,
 				iLBC_Dec_Inst_t *iLBCdec_inst,
 				WebRtc_Word16 mode);
   void WebRtcIlbcfix_EncodeImpl(WebRtc_UWord16 *bytes,
-				WebRtc_Word16 *block,
+				const WebRtc_Word16 *block,
 				iLBC_Enc_Inst_t *iLBCenc_inst);
 
 #ifdef __cplusplus

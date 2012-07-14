@@ -23,11 +23,11 @@
  *---------------------------------------------------------------*/
 
 WebRtc_Word16 WebRtcIlbcfix_UnpackBits( /* (o) "Empty" frame indicator */
-    WebRtc_UWord16 *bitstream,   /* (i) The packatized bitstream */
+    const WebRtc_UWord16 *bitstream,    /* (i) The packatized bitstream */
     iLBC_bits *enc_bits,  /* (o) Paramerers from bitstream */
     WebRtc_Word16 mode     /* (i) Codec mode (20 or 30) */
                                         ) {
-  WebRtc_UWord16 *bitstreamPtr;
+  const WebRtc_UWord16 *bitstreamPtr;
   int i, k;
   WebRtc_Word16 *tmpPtr;
 
