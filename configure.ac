@@ -4,7 +4,7 @@
 AC_INIT([libilbc], [1.1.1], [])
 AC_CONFIG_AUX_DIR(.)
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([tar-ustar dist-xz])
+AM_INIT_AUTOMAKE([tar-ustar dist-xz foreign])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 # Setup for libtool
