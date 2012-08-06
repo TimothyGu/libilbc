@@ -102,7 +102,6 @@ libilbc_la_SOURCES = \
     signal_processing/levinson_durbin.c \
     signal_processing/lpc_to_refl_coef.c \
     signal_processing/min_max_operations.c \
-    signal_processing/min_max_operations_neon.c \
     signal_processing/randomization_functions.c \
     signal_processing/refl_coef_to_lpc.c \
     signal_processing/resample.c \
