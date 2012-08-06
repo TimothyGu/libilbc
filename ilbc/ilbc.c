@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2011 The WebRTC project authors. All Rights Reserved.
+ *  Copyright (c) 2012 The WebRTC project authors. All Rights Reserved.
  *
  *  Use of this source code is governed by a BSD-style license
  *  that can be found in the LICENSE file in the root of the source
@@ -86,7 +86,7 @@ WebRtc_Word16 WebRtcIlbcfix_EncoderInit(iLBC_encinst_t *iLBCenc_inst, WebRtc_Wor
   }
 }
 
-WebRtc_Word16 WebRtcIlbcfix_Encode(iLBC_encinst_t *iLBCenc_inst, WebRtc_Word16 *speechIn, WebRtc_Word16 len, WebRtc_Word16 *encoded) {
+WebRtc_Word16 WebRtcIlbcfix_Encode(iLBC_encinst_t *iLBCenc_inst, const WebRtc_Word16 *speechIn, WebRtc_Word16 len, WebRtc_Word16 *encoded) {
 
   WebRtc_Word16 pos = 0;
   WebRtc_Word16 encpos = 0;
@@ -136,7 +136,7 @@ WebRtc_Word16 WebRtcIlbcfix_Decoderinit30Ms(iLBC_decinst_t *iLBCdec_inst) {
 
 
 WebRtc_Word16 WebRtcIlbcfix_Decode(iLBC_decinst_t *iLBCdec_inst,
-                                  WebRtc_Word16 *encoded,
+                                  const WebRtc_Word16 *encoded,
                                   WebRtc_Word16 len,
                                   WebRtc_Word16 *decoded,
                                   WebRtc_Word16 *speechType)
@@ -172,7 +172,7 @@ WebRtc_Word16 WebRtcIlbcfix_Decode(iLBC_decinst_t *iLBCdec_inst,
   }
 
   while ((i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->no_of_bytes)<len) {
-    WebRtcIlbcfix_DecodeImpl(&decoded[i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->blockl], (WebRtc_UWord16*) &encoded[i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->no_of_words], (iLBC_Dec_Inst_t*) iLBCdec_inst, 1);
+    WebRtcIlbcfix_DecodeImpl(&decoded[i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->blockl], (const WebRtc_UWord16*) &encoded[i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->no_of_words], (iLBC_Dec_Inst_t*) iLBCdec_inst, 1);
     i++;
   }
   /* iLBC does not support VAD/CNG yet */
@@ -181,7 +181,7 @@ WebRtc_Word16 WebRtcIlbcfix_Decode(iLBC_decinst_t *iLBCdec_inst,
 }
 
 WebRtc_Word16 WebRtcIlbcfix_Decode20Ms(iLBC_decinst_t *iLBCdec_inst,
-                                       WebRtc_Word16 *encoded,
+                                       const WebRtc_Word16 *encoded,
                                        WebRtc_Word16 len,
                                        WebRtc_Word16 *decoded,
                                        WebRtc_Word16 *speechType)
@@ -196,7 +196,7 @@ WebRtc_Word16 WebRtcIlbcfix_Decode20Ms(iLBC_decinst_t *iLBCdec_inst,
   }
 
   while ((i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->no_of_bytes)<len) {
-    WebRtcIlbcfix_DecodeImpl(&decoded[i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->blockl], (WebRtc_UWord16*) &encoded[i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->no_of_words], (iLBC_Dec_Inst_t*) iLBCdec_inst, 1);
+    WebRtcIlbcfix_DecodeImpl(&decoded[i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->blockl], (const WebRtc_UWord16*) &encoded[i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->no_of_words], (iLBC_Dec_Inst_t*) iLBCdec_inst, 1);
     i++;
   }
   /* iLBC does not support VAD/CNG yet */
@@ -205,7 +205,7 @@ WebRtc_Word16 WebRtcIlbcfix_Decode20Ms(iLBC_decinst_t *iLBCdec_inst,
 }
 
 WebRtc_Word16 WebRtcIlbcfix_Decode30Ms(iLBC_decinst_t *iLBCdec_inst,
-                                       WebRtc_Word16 *encoded,
+                                       const WebRtc_Word16 *encoded,
                                        WebRtc_Word16 len,
                                        WebRtc_Word16 *decoded,
                                        WebRtc_Word16 *speechType)
@@ -220,7 +220,7 @@ WebRtc_Word16 WebRtcIlbcfix_Decode30Ms(iLBC_decinst_t *iLBCdec_inst,
   }
 
   while ((i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->no_of_bytes)<len) {
-    WebRtcIlbcfix_DecodeImpl(&decoded[i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->blockl], (WebRtc_UWord16*) &encoded[i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->no_of_words], (iLBC_Dec_Inst_t*) iLBCdec_inst, 1);
+    WebRtcIlbcfix_DecodeImpl(&decoded[i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->blockl], (const WebRtc_UWord16*) &encoded[i*((iLBC_Dec_Inst_t*)iLBCdec_inst)->no_of_words], (iLBC_Dec_Inst_t*) iLBCdec_inst, 1);
     i++;
   }
   /* iLBC does not support VAD/CNG yet */
@@ -251,7 +251,7 @@ WebRtc_Word16 WebRtcIlbcfix_NetEqPlc(iLBC_decinst_t *iLBCdec_inst, WebRtc_Word16
   return (0);
 }
 
-void WebRtcIlbcfix_version(WebRtc_Word8 *version)
+void WebRtcIlbcfix_version(char *version)
 {
   strcpy((char*)version, "1.1.1");
 }
