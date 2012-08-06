@@ -59,22 +59,22 @@
     }, # spl
   ], # targets
   'conditions': [
-    ['build_with_chromium==0', {
+    ['include_tests==1', {
       'targets': [
         {
           'target_name': 'signal_processing_unittests',
           'type': 'executable',
           'dependencies': [
             'signal_processing',
-            '<(webrtc_root)/../test/test.gyp:test_support_main',
-            '<(webrtc_root)/../testing/gtest.gyp:gtest',
+            '<(webrtc_root)/test/test.gyp:test_support_main',
+            '<(DEPTH)/testing/gtest.gyp:gtest',
           ],
           'sources': [
             'signal_processing_unittest.cc',
           ],
         }, # spl_unittests
       ], # targets
-    }], # build_with_chromium
+    }], # include_tests
   ], # conditions
 }
 

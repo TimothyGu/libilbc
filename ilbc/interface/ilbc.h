@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2011 The WebRTC project authors. All Rights Reserved.
+ *  Copyright (c) 2012 The WebRTC project authors. All Rights Reserved.
  *
  *  Use of this source code is governed by a BSD-style license
  *  that can be found in the LICENSE file in the root of the source
@@ -147,9 +147,9 @@ extern "C" {
    */
 
   WebRtc_Word16 WebRtcIlbcfix_Encode(iLBC_encinst_t *iLBCenc_inst,
-				     WebRtc_Word16 *speechIn,
-				     WebRtc_Word16 len,
-				     WebRtc_Word16 *encoded);
+                                     const WebRtc_Word16 *speechIn,
+                                     WebRtc_Word16 len,
+                                     WebRtc_Word16 *encoded);
 
   /****************************************************************************
    * WebRtcIlbcfix_DecoderInit(...)
@@ -193,20 +193,20 @@ extern "C" {
    */
 
   WebRtc_Word16 WebRtcIlbcfix_Decode(iLBC_decinst_t *iLBCdec_inst,
-				     WebRtc_Word16* encoded,
-				     WebRtc_Word16 len,
-				     WebRtc_Word16 *decoded,
-				     WebRtc_Word16 *speechType);
+                                     const WebRtc_Word16* encoded,
+                                     WebRtc_Word16 len,
+                                     WebRtc_Word16 *decoded,
+                                     WebRtc_Word16 *speechType);
   WebRtc_Word16 WebRtcIlbcfix_Decode20Ms(iLBC_decinst_t *iLBCdec_inst,
-					 WebRtc_Word16 *encoded,
-					 WebRtc_Word16 len,
-					 WebRtc_Word16 *decoded,
-					 WebRtc_Word16 *speechType);
+                                         const WebRtc_Word16 *encoded,
+                                         WebRtc_Word16 len,
+                                         WebRtc_Word16 *decoded,
+                                         WebRtc_Word16 *speechType);
   WebRtc_Word16 WebRtcIlbcfix_Decode30Ms(iLBC_decinst_t *iLBCdec_inst,
-					 WebRtc_Word16 *encoded,
-					 WebRtc_Word16 len,
-					 WebRtc_Word16 *decoded,
-					 WebRtc_Word16 *speechType);
+                                         const WebRtc_Word16 *encoded,
+                                         WebRtc_Word16 len,
+                                         WebRtc_Word16 *decoded,
+                                         WebRtc_Word16 *speechType);
 
   /****************************************************************************
    * WebRtcIlbcfix_DecodePlc(...)
@@ -261,7 +261,7 @@ extern "C" {
    *      - version           : Version number of iLBC (maximum 20 char)
    */
 
-  void WebRtcIlbcfix_version(WebRtc_Word8 *version);
+  void WebRtcIlbcfix_version(char *version);
 
 
   /****************************************************************************
@@ -434,4 +434,3 @@ extern "C" {
 #endif
 
 #endif
-
