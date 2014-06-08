@@ -118,3 +118,17 @@ libilbc_la_SOURCES = \
     signal_processing/webrtc_fft_t_1024_8.c \
     signal_processing/webrtc_fft_t_rad.c
 
+EXTRA_DIST = \
+    $(top_srcdir)/*.txt \
+    $(top_srcdir)/*.h \
+    $(top_srcdir)/ilbc/*.gypi \
+    $(top_srcdir)/ilbc/*.h \
+    $(top_srcdir)/ilbc/*.m \
+    $(top_srcdir)/ilbc/*.mk \
+    $(top_srcdir)/ilbc/test/* \
+    $(top_srcdir)/signal_processing/*.cc \
+    $(top_srcdir)/signal_processing/*.gypi \
+    $(top_srcdir)/signal_processing/*.h \
+    $(top_srcdir)/signal_processing/*.mk \
+    $(top_srcdir)/signal_processing/*.s \
+    $(top_srcdir)/signal_processing/include/*
