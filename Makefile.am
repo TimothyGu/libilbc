@@ -1,7 +1,7 @@
 ACLOCAL_AMFLAGS = -I m4
 
 AM_CFLAGS = -I$(top_srcdir) -I$(top_srcdir)/ilbc/interface -I$(top_srcdir)/signal_processing/include \
-    -Wall -Wextra -Werror -fvisibility=hidden -Wno-unused-parameter -fno-strict-aliasing
+    -Wall -Wextra -fvisibility=hidden -Wno-unused-parameter -fno-strict-aliasing
 
 libilbcincludedir = $(includedir)
 libilbcinclude_HEADERS = $(top_srcdir)/ilbc/interface/ilbc.h
