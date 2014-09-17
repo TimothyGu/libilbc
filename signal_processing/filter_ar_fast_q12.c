@@ -40,4 +40,3 @@ void WebRtcSpl_FilterARFastQ12(const int16_t* data_in,
     data_out[i] = (int16_t)((output + 2048) >> 12);
   }
 }
-
