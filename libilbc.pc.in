@@ -7,4 +7,5 @@ Name: libilbc
 Description: Internet Low Bitrate Codec (iLBC) library
 Version: 1.1.1
 Libs: -L${libdir} -lilbc
+Libs.private: @PTHREAD_LIBS@
 Cflags: -I${includedir}/

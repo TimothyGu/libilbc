@@ -14,6 +14,8 @@
  * Some code came from common/rtcd.c in the WebM project.
  */
 
+#include "config.h"
+
 #include "real_fft.h"
 #include "signal_processing_library.h"
 // FIXME: port NEON and MIPS optimizations

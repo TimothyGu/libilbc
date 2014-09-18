@@ -17,12 +17,23 @@ DOLT
 
 AC_SUBST(LIBTOOL_DEPS)
 
+AX_PTHREAD([
+    AC_DEFINE([WEBRTC_POSIX], [1],
+              [Define if pthreads is available])
+    LIBS="$PTHREAD_LIBS $LIBS"
+    CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
+    CC="$PTHREAD_CC"
+])
+
+AC_SUBST(PTHREAD_LIBS)
+
 # soname version to use
 # goes by ‘current[:revision[:age]]’ with the soname ending up as
 # current.age.revision.
 LIBILBC_VERSION=0:1:0
 AC_SUBST(LIBILBC_VERSION)
 
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile
                  libilbc.pc])
 AC_OUTPUT
