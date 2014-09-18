@@ -18,10 +18,10 @@
 #ifndef WEBRTC_MODULES_AUDIO_CODING_CODECS_ILBC_MAIN_SOURCE_DEFINES_H_
 #define WEBRTC_MODULES_AUDIO_CODING_CODECS_ILBC_MAIN_SOURCE_DEFINES_H_
 
+#include <string.h>
+#include "signal_processing_library.h"
 #include "typedefs.h"
 #include "ilbc.h"
-#include "signal_processing_library.h"
-#include <string.h>
 
 /* cb settings */
 
@@ -64,14 +64,14 @@
 
 /* Struct for the bits */
 typedef struct iLBC_bits_t_ {
-  WebRtc_Word16 lsf[LSF_NSPLIT*LPC_N_MAX];
-  WebRtc_Word16 cb_index[CB_NSTAGES*(NASUB_MAX+1)];  /* First CB_NSTAGES values contains extra CB index */
-  WebRtc_Word16 gain_index[CB_NSTAGES*(NASUB_MAX+1)]; /* First CB_NSTAGES values contains extra CB gain */
-  WebRtc_Word16 idxForMax;
-  WebRtc_Word16 state_first;
-  WebRtc_Word16 idxVec[STATE_SHORT_LEN_30MS];
-  WebRtc_Word16 firstbits;
-  WebRtc_Word16 startIdx;
+  int16_t lsf[LSF_NSPLIT*LPC_N_MAX];
+  int16_t cb_index[CB_NSTAGES*(NASUB_MAX+1)];  /* First CB_NSTAGES values contains extra CB index */
+  int16_t gain_index[CB_NSTAGES*(NASUB_MAX+1)]; /* First CB_NSTAGES values contains extra CB gain */
+  int16_t idxForMax;
+  int16_t state_first;
+  int16_t idxVec[STATE_SHORT_LEN_30MS];
+  int16_t firstbits;
+  int16_t startIdx;
 } iLBC_bits;
 
 #endif

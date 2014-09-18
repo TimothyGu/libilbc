@@ -11,7 +11,6 @@
 
 /*
  * This file contains implementations of the randomization functions
- * WebRtcSpl_IncreaseSeed()
  * WebRtcSpl_RandU()
  * WebRtcSpl_RandN()
  * WebRtcSpl_RandUArray()
@@ -22,7 +21,9 @@
 
 #include "signal_processing_library.h"
 
-static const WebRtc_Word16 kRandNTable[] = {
+static const uint32_t kMaxSeedUsed = 0x80000000;
+
+static const int16_t kRandNTable[] = {
     9178,    -7260,       40,    10189,     4894,    -3531,   -13779,    14764,
    -4008,    -8884,    -8990,     1008,     7368,     5184,     3251,    -5817,
    -9786,     5963,     1770,     8066,    -7135,    10772,    -2298,     1361,
@@ -89,31 +90,26 @@ static const WebRtc_Word16 kRandNTable[] = {
     2374,    -5797,    11839,     8940,   -11874,    18213,     2855,    10492
 };
 
-WebRtc_UWord32 WebRtcSpl_IncreaseSeed(WebRtc_UWord32 *seed)
-{
-    seed[0] = (seed[0] * ((WebRtc_Word32)69069) + 1) & (WEBRTC_SPL_MAX_SEED_USED - 1);
-    return seed[0];
+static uint32_t IncreaseSeed(uint32_t* seed) {
+  seed[0] = (seed[0] * ((int32_t)69069) + 1) & (kMaxSeedUsed - 1);
+  return seed[0];
 }
 
-WebRtc_Word16 WebRtcSpl_RandU(WebRtc_UWord32 *seed)
-{
-    return (WebRtc_Word16)(WebRtcSpl_IncreaseSeed(seed) >> 16);
+int16_t WebRtcSpl_RandU(uint32_t* seed) {
+  return (int16_t)(IncreaseSeed(seed) >> 16);
 }
 
-WebRtc_Word16 WebRtcSpl_RandN(WebRtc_UWord32 *seed)
-{
-    return kRandNTable[WebRtcSpl_IncreaseSeed(seed) >> 23];
+int16_t WebRtcSpl_RandN(uint32_t* seed) {
+  return kRandNTable[IncreaseSeed(seed) >> 23];
 }
 
-// Creates an array of uniformly distributed variables
-WebRtc_Word16 WebRtcSpl_RandUArray(WebRtc_Word16* vector,
-                                   WebRtc_Word16 vector_length,
-                                   WebRtc_UWord32* seed)
-{
-    int i;
-    for (i = 0; i < vector_length; i++)
-    {
-        vector[i] = WebRtcSpl_RandU(seed);
-    }
-    return vector_length;
+// Creates an array of uniformly distributed variables.
+int16_t WebRtcSpl_RandUArray(int16_t* vector,
+                             int16_t vector_length,
+                             uint32_t* seed) {
+  int i;
+  for (i = 0; i < vector_length; i++) {
+    vector[i] = WebRtcSpl_RandU(seed);
+  }
+  return vector_length;
 }

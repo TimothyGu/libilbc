@@ -106,4 +106,3 @@ void WebRtcSpl_ComplexBitReverse(int16_t* __restrict complex_data, int stages) {
     }
   }
 }
-

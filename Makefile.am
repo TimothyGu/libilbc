@@ -103,20 +103,20 @@ libilbc_la_SOURCES = \
     signal_processing/lpc_to_refl_coef.c \
     signal_processing/min_max_operations.c \
     signal_processing/randomization_functions.c \
+    signal_processing/real_fft.c \
     signal_processing/refl_coef_to_lpc.c \
     signal_processing/resample.c \
     signal_processing/resample_48khz.c \
     signal_processing/resample_by_2.c \
     signal_processing/resample_by_2_internal.c \
     signal_processing/resample_fractional.c \
+    signal_processing/spl_init.c \
     signal_processing/spl_sqrt.c \
     signal_processing/spl_sqrt_floor.c \
     signal_processing/spl_version.c \
     signal_processing/splitting_filter.c \
     signal_processing/sqrt_of_one_minus_x_squared.c \
-    signal_processing/vector_scaling_operations.c \
-    signal_processing/webrtc_fft_t_1024_8.c \
-    signal_processing/webrtc_fft_t_rad.c
+    signal_processing/vector_scaling_operations.c
 
 EXTRA_DIST = \
     $(top_srcdir)/*.txt \
@@ -130,5 +130,5 @@ EXTRA_DIST = \
     $(top_srcdir)/signal_processing/*.gypi \
     $(top_srcdir)/signal_processing/*.h \
     $(top_srcdir)/signal_processing/*.mk \
-    $(top_srcdir)/signal_processing/*.s \
+    $(top_srcdir)/signal_processing/*.S \
     $(top_srcdir)/signal_processing/include/*

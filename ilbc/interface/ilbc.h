@@ -24,17 +24,6 @@
 
 #include <stdint.h>
 
-#define G_CONST const
-
-typedef int64_t             WebRtc_Word64;
-typedef uint64_t            WebRtc_UWord64;
-typedef int32_t             WebRtc_Word32;
-typedef uint32_t            WebRtc_UWord32;
-typedef int16_t             WebRtc_Word16;
-typedef uint16_t            WebRtc_UWord16;
-typedef char                WebRtc_Word8;
-typedef uint8_t             WebRtc_UWord8;
-
 /*
  * Solution to support multiple instances
  * Customer has to cast instance to proper type
@@ -71,12 +60,12 @@ extern "C" {
    *                            -1 - Error
    */
 
-  WebRtc_Word16 WebRtcIlbcfix_EncoderAssign(iLBC_encinst_t **iLBC_encinst,
-					    WebRtc_Word16 *ILBCENC_inst_Addr,
-					    WebRtc_Word16 *size);
-  WebRtc_Word16 WebRtcIlbcfix_DecoderAssign(iLBC_decinst_t **iLBC_decinst,
-					    WebRtc_Word16 *ILBCDEC_inst_Addr,
-					    WebRtc_Word16 *size);
+  int16_t WebRtcIlbcfix_EncoderAssign(iLBC_encinst_t **iLBC_encinst,
+                                      int16_t *ILBCENC_inst_Addr,
+                                      int16_t *size);
+  int16_t WebRtcIlbcfix_DecoderAssign(iLBC_decinst_t **iLBC_decinst,
+                                      int16_t *ILBCDEC_inst_Addr,
+                                      int16_t *size);
 
 
   /****************************************************************************
@@ -91,8 +80,8 @@ extern "C" {
    *                            -1 - Error
    */
 
-  WebRtc_Word16 WebRtcIlbcfix_EncoderCreate(iLBC_encinst_t **iLBC_encinst);
-  WebRtc_Word16 WebRtcIlbcfix_DecoderCreate(iLBC_decinst_t **iLBC_decinst);
+  int16_t WebRtcIlbcfix_EncoderCreate(iLBC_encinst_t **iLBC_encinst);
+  int16_t WebRtcIlbcfix_DecoderCreate(iLBC_decinst_t **iLBC_decinst);
 
   /****************************************************************************
    * WebRtcIlbcfix_XxxFree(...)
@@ -106,8 +95,8 @@ extern "C" {
    *                            -1 - Error
    */
 
-  WebRtc_Word16 WebRtcIlbcfix_EncoderFree(iLBC_encinst_t *iLBC_encinst);
-  WebRtc_Word16 WebRtcIlbcfix_DecoderFree(iLBC_decinst_t *iLBC_decinst);
+  int16_t WebRtcIlbcfix_EncoderFree(iLBC_encinst_t *iLBC_encinst);
+  int16_t WebRtcIlbcfix_DecoderFree(iLBC_decinst_t *iLBC_decinst);
 
 
   /****************************************************************************
@@ -124,8 +113,8 @@ extern "C" {
    *                            -1 - Error
    */
 
-  WebRtc_Word16 WebRtcIlbcfix_EncoderInit(iLBC_encinst_t *iLBCenc_inst,
-					  WebRtc_Word16 frameLen);
+  int16_t WebRtcIlbcfix_EncoderInit(iLBC_encinst_t *iLBCenc_inst,
+                                    int16_t frameLen);
 
   /****************************************************************************
    * WebRtcIlbcfix_Encode(...)
@@ -146,10 +135,10 @@ extern "C" {
    *                            -1 - Error
    */
 
-  WebRtc_Word16 WebRtcIlbcfix_Encode(iLBC_encinst_t *iLBCenc_inst,
-                                     const WebRtc_Word16 *speechIn,
-                                     WebRtc_Word16 len,
-                                     WebRtc_Word16 *encoded);
+  int16_t WebRtcIlbcfix_Encode(iLBC_encinst_t *iLBCenc_inst,
+                               const int16_t *speechIn,
+                               int16_t len,
+                               int16_t *encoded);
 
   /****************************************************************************
    * WebRtcIlbcfix_DecoderInit(...)
@@ -167,10 +156,10 @@ extern "C" {
    *                            -1 - Error
    */
 
-  WebRtc_Word16 WebRtcIlbcfix_DecoderInit(iLBC_decinst_t *iLBCdec_inst,
-					  WebRtc_Word16 frameLen);
-  WebRtc_Word16 WebRtcIlbcfix_DecoderInit20Ms(iLBC_decinst_t *iLBCdec_inst);
-  WebRtc_Word16 WebRtcIlbcfix_Decoderinit30Ms(iLBC_decinst_t *iLBCdec_inst);
+  int16_t WebRtcIlbcfix_DecoderInit(iLBC_decinst_t *iLBCdec_inst,
+                                    int16_t frameLen);
+  int16_t WebRtcIlbcfix_DecoderInit20Ms(iLBC_decinst_t *iLBCdec_inst);
+  int16_t WebRtcIlbcfix_Decoderinit30Ms(iLBC_decinst_t *iLBCdec_inst);
 
   /****************************************************************************
    * WebRtcIlbcfix_Decode(...)
@@ -192,21 +181,21 @@ extern "C" {
    *                            -1 - Error
    */
 
-  WebRtc_Word16 WebRtcIlbcfix_Decode(iLBC_decinst_t *iLBCdec_inst,
-                                     const WebRtc_Word16* encoded,
-                                     WebRtc_Word16 len,
-                                     WebRtc_Word16 *decoded,
-                                     WebRtc_Word16 *speechType);
-  WebRtc_Word16 WebRtcIlbcfix_Decode20Ms(iLBC_decinst_t *iLBCdec_inst,
-                                         const WebRtc_Word16 *encoded,
-                                         WebRtc_Word16 len,
-                                         WebRtc_Word16 *decoded,
-                                         WebRtc_Word16 *speechType);
-  WebRtc_Word16 WebRtcIlbcfix_Decode30Ms(iLBC_decinst_t *iLBCdec_inst,
-                                         const WebRtc_Word16 *encoded,
-                                         WebRtc_Word16 len,
-                                         WebRtc_Word16 *decoded,
-                                         WebRtc_Word16 *speechType);
+  int16_t WebRtcIlbcfix_Decode(iLBC_decinst_t *iLBCdec_inst,
+                               const int16_t* encoded,
+                               int16_t len,
+                               int16_t *decoded,
+                               int16_t *speechType);
+  int16_t WebRtcIlbcfix_Decode20Ms(iLBC_decinst_t *iLBCdec_inst,
+                                   const int16_t *encoded,
+                                   int16_t len,
+                                   int16_t *decoded,
+                                   int16_t *speechType);
+  int16_t WebRtcIlbcfix_Decode30Ms(iLBC_decinst_t *iLBCdec_inst,
+                                   const int16_t *encoded,
+                                   int16_t len,
+                                   int16_t *decoded,
+                                   int16_t *speechType);
 
   /****************************************************************************
    * WebRtcIlbcfix_DecodePlc(...)
@@ -226,9 +215,9 @@ extern "C" {
    *                            -1 - Error
    */
 
-  WebRtc_Word16 WebRtcIlbcfix_DecodePlc(iLBC_decinst_t *iLBCdec_inst,
-					WebRtc_Word16 *decoded,
-					WebRtc_Word16 noOfLostFrames);
+  int16_t WebRtcIlbcfix_DecodePlc(iLBC_decinst_t *iLBCdec_inst,
+                                  int16_t *decoded,
+                                  int16_t noOfLostFrames);
 
   /****************************************************************************
    * WebRtcIlbcfix_NetEqPlc(...)
@@ -248,9 +237,9 @@ extern "C" {
    *                            -1 - Error
    */
 
-  WebRtc_Word16 WebRtcIlbcfix_NetEqPlc(iLBC_decinst_t *iLBCdec_inst,
-				       WebRtc_Word16 *decoded,
-				       WebRtc_Word16 noOfLostFrames);
+  int16_t WebRtcIlbcfix_NetEqPlc(iLBC_decinst_t *iLBCdec_inst,
+                                 int16_t *decoded,
+                                 int16_t noOfLostFrames);
 
   /****************************************************************************
    * WebRtcIlbcfix_version(...)
@@ -328,39 +317,39 @@ extern "C" {
   typedef struct iLBC_Enc_Inst_t_ {
 
     /* flag for frame size mode */
-    WebRtc_Word16 mode;
+    int16_t mode;
 
     /* basic parameters for different frame sizes */
-    WebRtc_Word16 blockl;
-    WebRtc_Word16 nsub;
-    WebRtc_Word16 nasub;
-    WebRtc_Word16 no_of_bytes, no_of_words;
-    WebRtc_Word16 lpc_n;
-    WebRtc_Word16 state_short_len;
+    int16_t blockl;
+    int16_t nsub;
+    int16_t nasub;
+    int16_t no_of_bytes, no_of_words;
+    int16_t lpc_n;
+    int16_t state_short_len;
 
     /* analysis filter state */
-    WebRtc_Word16 anaMem[LPC_FILTERORDER];
+    int16_t anaMem[LPC_FILTERORDER];
 
     /* Fix-point old lsf parameters for interpolation */
-    WebRtc_Word16 lsfold[LPC_FILTERORDER];
-    WebRtc_Word16 lsfdeqold[LPC_FILTERORDER];
+    int16_t lsfold[LPC_FILTERORDER];
+    int16_t lsfdeqold[LPC_FILTERORDER];
 
     /* signal buffer for LP analysis */
-    WebRtc_Word16 lpc_buffer[LPC_LOOKBACK + BLOCKL_MAX];
+    int16_t lpc_buffer[LPC_LOOKBACK + BLOCKL_MAX];
 
     /* state of input HP filter */
-    WebRtc_Word16 hpimemx[2];
-    WebRtc_Word16 hpimemy[4];
+    int16_t hpimemx[2];
+    int16_t hpimemy[4];
 
 #ifdef SPLIT_10MS
-    WebRtc_Word16 weightdenumbuf[66];
-    WebRtc_Word16 past_samples[160];
-    WebRtc_UWord16 bytes[25];
-    WebRtc_Word16 section;
-    WebRtc_Word16 Nfor_flag;
-    WebRtc_Word16 Nback_flag;
-    WebRtc_Word16 start_pos;
-    WebRtc_Word16 diff;
+    int16_t weightdenumbuf[66];
+    int16_t past_samples[160];
+    uint16_t bytes[25];
+    int16_t section;
+    int16_t Nfor_flag;
+    int16_t Nback_flag;
+    int16_t start_pos;
+    int16_t diff;
 #endif
 
   } iLBC_Enc_Inst_t;
@@ -369,46 +358,46 @@ extern "C" {
   typedef struct iLBC_Dec_Inst_t_ {
 
     /* flag for frame size mode */
-    WebRtc_Word16 mode;
+    int16_t mode;
 
     /* basic parameters for different frame sizes */
-    WebRtc_Word16 blockl;
-    WebRtc_Word16 nsub;
-    WebRtc_Word16 nasub;
-    WebRtc_Word16 no_of_bytes, no_of_words;
-    WebRtc_Word16 lpc_n;
-    WebRtc_Word16 state_short_len;
+    int16_t blockl;
+    int16_t nsub;
+    int16_t nasub;
+    int16_t no_of_bytes, no_of_words;
+    int16_t lpc_n;
+    int16_t state_short_len;
 
     /* synthesis filter state */
-    WebRtc_Word16 syntMem[LPC_FILTERORDER];
+    int16_t syntMem[LPC_FILTERORDER];
 
     /* old LSF for interpolation */
-    WebRtc_Word16 lsfdeqold[LPC_FILTERORDER];
+    int16_t lsfdeqold[LPC_FILTERORDER];
 
     /* pitch lag estimated in enhancer and used in PLC */
     int last_lag;
 
     /* PLC state information */
     int consPLICount, prev_enh_pl;
-    WebRtc_Word16 perSquare;
+    int16_t perSquare;
 
-    WebRtc_Word16 prevScale, prevPLI;
-    WebRtc_Word16 prevLag, prevLpc[LPC_FILTERORDER+1];
-    WebRtc_Word16 prevResidual[NSUB_MAX*SUBL];
-    WebRtc_Word16 seed;
+    int16_t prevScale, prevPLI;
+    int16_t prevLag, prevLpc[LPC_FILTERORDER+1];
+    int16_t prevResidual[NSUB_MAX*SUBL];
+    int16_t seed;
 
     /* previous synthesis filter parameters */
 
-    WebRtc_Word16 old_syntdenum[(LPC_FILTERORDER + 1)*NSUB_MAX];
+    int16_t old_syntdenum[(LPC_FILTERORDER + 1)*NSUB_MAX];
 
     /* state of output HP filter */
-    WebRtc_Word16 hpimemx[2];
-    WebRtc_Word16 hpimemy[4];
+    int16_t hpimemx[2];
+    int16_t hpimemy[4];
 
     /* enhancer state information */
     int use_enhancer;
-    WebRtc_Word16 enh_buf[ENH_BUFL+ENH_BUFL_FILTEROVERHEAD];
-    WebRtc_Word16 enh_period[ENH_NBLOCKS_TOT];
+    int16_t enh_buf[ENH_BUFL+ENH_BUFL_FILTEROVERHEAD];
+    int16_t enh_period[ENH_NBLOCKS_TOT];
 
   } iLBC_Dec_Inst_t;
 
@@ -416,17 +405,17 @@ extern "C" {
 #define initEncode WebRtcIlbcfix_InitEncode
 #define iLBC_decode WebRtcIlbcfix_DecodeImpl
 #define iLBC_encode WebRtcIlbcfix_EncodeImpl
-  WebRtc_Word16 WebRtcIlbcfix_InitDecode(iLBC_Dec_Inst_t *iLBCdec_inst,
-					 WebRtc_Word16 mode,
+  int16_t WebRtcIlbcfix_InitDecode(iLBC_Dec_Inst_t *iLBCdec_inst,
+					 int16_t mode,
 					 int use_enhancer);
-  WebRtc_Word16 WebRtcIlbcfix_InitEncode(iLBC_Enc_Inst_t *iLBCenc_inst,
-					 WebRtc_Word16 mode);
-  void WebRtcIlbcfix_DecodeImpl(WebRtc_Word16 *decblock,
-				const WebRtc_UWord16 *bytes,
+  int16_t WebRtcIlbcfix_InitEncode(iLBC_Enc_Inst_t *iLBCenc_inst,
+					 int16_t mode);
+  void WebRtcIlbcfix_DecodeImpl(int16_t *decblock,
+				const uint16_t *bytes,
 				iLBC_Dec_Inst_t *iLBCdec_inst,
-				WebRtc_Word16 mode);
-  void WebRtcIlbcfix_EncodeImpl(WebRtc_UWord16 *bytes,
-				const WebRtc_Word16 *block,
+				int16_t mode);
+  void WebRtcIlbcfix_EncodeImpl(uint16_t *bytes,
+				const int16_t *block,
 				iLBC_Enc_Inst_t *iLBCenc_inst);
 
 #ifdef __cplusplus

@@ -9,19 +9,15 @@
 @
 
 @ vector_scaling_operations_neon.s
-@ This file contains the function WebRtcSpl_ScaleAndAddVectorsWithRound(),
+@ This file contains the function WebRtcSpl_ScaleAndAddVectorsWithRoundNeon(),
 @ optimized for ARM Neon platform. Output is bit-exact with the reference
 @ C code in vector_scaling_operations.c.
 
-.arch armv7-a
-.fpu neon
+#include "webrtc/system_wrappers/interface/asm_defines.h"
 
+GLOBAL_FUNCTION WebRtcSpl_ScaleAndAddVectorsWithRoundNeon
 .align  2
-.global WebRtcSpl_ScaleAndAddVectorsWithRound
-
-WebRtcSpl_ScaleAndAddVectorsWithRound:
-.fnstart
-
+DEFINE_FUNCTION WebRtcSpl_ScaleAndAddVectorsWithRoundNeon
   push {r4-r9}
 
   ldr r4, [sp, #32]           @ length
@@ -84,5 +80,3 @@ LOOP_NO_UNROLLING:
 END:
   pop {r4-r9}
   bx  lr
-
-.fnend

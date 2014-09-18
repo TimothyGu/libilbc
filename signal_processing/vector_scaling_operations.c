@@ -17,15 +17,13 @@
  * WebRtcSpl_ScaleVector()
  * WebRtcSpl_ScaleVectorWithSat()
  * WebRtcSpl_ScaleAndAddVectors()
- * WebRtcSpl_ScaleAndAddVectorsWithRound()
+ * WebRtcSpl_ScaleAndAddVectorsWithRoundC()
  */
 
 #include "signal_processing_library.h"
 
-void WebRtcSpl_VectorBitShiftW16(WebRtc_Word16 *res,
-                             WebRtc_Word16 length,
-                             G_CONST WebRtc_Word16 *in,
-                             WebRtc_Word16 right_shifts)
+void WebRtcSpl_VectorBitShiftW16(int16_t *res, int16_t length,
+                                 const int16_t *in, int16_t right_shifts)
 {
     int i;
 
@@ -44,10 +42,10 @@ void WebRtcSpl_VectorBitShiftW16(WebRtc_Word16 *res,
     }
 }
 
-void WebRtcSpl_VectorBitShiftW32(WebRtc_Word32 *out_vector,
-                             WebRtc_Word16 vector_length,
-                             G_CONST WebRtc_Word32 *in_vector,
-                             WebRtc_Word16 right_shifts)
+void WebRtcSpl_VectorBitShiftW32(int32_t *out_vector,
+                                 int16_t vector_length,
+                                 const int32_t *in_vector,
+                                 int16_t right_shifts)
 {
     int i;
 
@@ -66,56 +64,52 @@ void WebRtcSpl_VectorBitShiftW32(WebRtc_Word32 *out_vector,
     }
 }
 
-void WebRtcSpl_VectorBitShiftW32ToW16(WebRtc_Word16 *res,
-                                  WebRtc_Word16 length,
-                                  G_CONST WebRtc_Word32 *in,
-                                  WebRtc_Word16 right_shifts)
-{
-    int i;
+void WebRtcSpl_VectorBitShiftW32ToW16(int16_t* out, int length,
+                                      const int32_t* in, int right_shifts) {
+  int i;
+  int32_t tmp_w32;
 
-    if (right_shifts >= 0)
-    {
-        for (i = length; i > 0; i--)
-        {
-            (*res++) = (WebRtc_Word16)((*in++) >> right_shifts);
-        }
-    } else
-    {
-        WebRtc_Word16 left_shifts = -right_shifts;
-        for (i = length; i > 0; i--)
-        {
-            (*res++) = (WebRtc_Word16)((*in++) << left_shifts);
-        }
+  if (right_shifts >= 0) {
+    for (i = length; i > 0; i--) {
+      tmp_w32 = (*in++) >> right_shifts;
+      (*out++) = WebRtcSpl_SatW32ToW16(tmp_w32);
     }
+  } else {
+    int left_shifts = -right_shifts;
+    for (i = length; i > 0; i--) {
+      tmp_w32 = (*in++) << left_shifts;
+      (*out++) = WebRtcSpl_SatW32ToW16(tmp_w32);
+    }
+  }
 }
 
-void WebRtcSpl_ScaleVector(G_CONST WebRtc_Word16 *in_vector, WebRtc_Word16 *out_vector,
-                           WebRtc_Word16 gain, WebRtc_Word16 in_vector_length,
-                           WebRtc_Word16 right_shifts)
+void WebRtcSpl_ScaleVector(const int16_t *in_vector, int16_t *out_vector,
+                           int16_t gain, int16_t in_vector_length,
+                           int16_t right_shifts)
 {
     // Performs vector operation: out_vector = (gain*in_vector)>>right_shifts
     int i;
-    G_CONST WebRtc_Word16 *inptr;
-    WebRtc_Word16 *outptr;
+    const int16_t *inptr;
+    int16_t *outptr;
 
     inptr = in_vector;
     outptr = out_vector;
 
     for (i = 0; i < in_vector_length; i++)
     {
-        (*outptr++) = (WebRtc_Word16)WEBRTC_SPL_MUL_16_16_RSFT(*inptr++, gain, right_shifts);
+        (*outptr++) = (int16_t)WEBRTC_SPL_MUL_16_16_RSFT(*inptr++, gain, right_shifts);
     }
 }
 
-void WebRtcSpl_ScaleVectorWithSat(G_CONST WebRtc_Word16 *in_vector, WebRtc_Word16 *out_vector,
-                                 WebRtc_Word16 gain, WebRtc_Word16 in_vector_length,
-                                 WebRtc_Word16 right_shifts)
+void WebRtcSpl_ScaleVectorWithSat(const int16_t *in_vector, int16_t *out_vector,
+                                 int16_t gain, int16_t in_vector_length,
+                                 int16_t right_shifts)
 {
     // Performs vector operation: out_vector = (gain*in_vector)>>right_shifts
     int i;
-    WebRtc_Word32 tmpW32;
-    G_CONST WebRtc_Word16 *inptr;
-    WebRtc_Word16 *outptr;
+    int32_t tmpW32;
+    const int16_t *inptr;
+    int16_t *outptr;
 
     inptr = in_vector;
     outptr = out_vector;
@@ -127,15 +121,15 @@ void WebRtcSpl_ScaleVectorWithSat(G_CONST WebRtc_Word16 *in_vector, WebRtc_Word1
     }
 }
 
-void WebRtcSpl_ScaleAndAddVectors(G_CONST WebRtc_Word16 *in1, WebRtc_Word16 gain1, int shift1,
-                                  G_CONST WebRtc_Word16 *in2, WebRtc_Word16 gain2, int shift2,
-                                  WebRtc_Word16 *out, int vector_length)
+void WebRtcSpl_ScaleAndAddVectors(const int16_t *in1, int16_t gain1, int shift1,
+                                  const int16_t *in2, int16_t gain2, int shift2,
+                                  int16_t *out, int vector_length)
 {
     // Performs vector operation: out = (gain1*in1)>>shift1 + (gain2*in2)>>shift2
     int i;
-    G_CONST WebRtc_Word16 *in1ptr;
-    G_CONST WebRtc_Word16 *in2ptr;
-    WebRtc_Word16 *outptr;
+    const int16_t *in1ptr;
+    const int16_t *in2ptr;
+    int16_t *outptr;
 
     in1ptr = in1;
     in2ptr = in2;
@@ -143,19 +137,19 @@ void WebRtcSpl_ScaleAndAddVectors(G_CONST WebRtc_Word16 *in1, WebRtc_Word16 gain
 
     for (i = 0; i < vector_length; i++)
     {
-        (*outptr++) = (WebRtc_Word16)WEBRTC_SPL_MUL_16_16_RSFT(gain1, *in1ptr++, shift1)
-                + (WebRtc_Word16)WEBRTC_SPL_MUL_16_16_RSFT(gain2, *in2ptr++, shift2);
+        (*outptr++) = (int16_t)WEBRTC_SPL_MUL_16_16_RSFT(gain1, *in1ptr++, shift1)
+                + (int16_t)WEBRTC_SPL_MUL_16_16_RSFT(gain2, *in2ptr++, shift2);
     }
 }
 
-#if !(defined(WEBRTC_ANDROID) && defined(WEBRTC_ARCH_ARM_NEON))
-int WebRtcSpl_ScaleAndAddVectorsWithRound(const int16_t* in_vector1,
-                                          int16_t in_vector1_scale,
-                                          const int16_t* in_vector2,
-                                          int16_t in_vector2_scale,
-                                          int right_shifts,
-                                          int16_t* out_vector,
-                                          int length) {
+// C version of WebRtcSpl_ScaleAndAddVectorsWithRound() for generic platforms.
+int WebRtcSpl_ScaleAndAddVectorsWithRoundC(const int16_t* in_vector1,
+                                           int16_t in_vector1_scale,
+                                           const int16_t* in_vector2,
+                                           int16_t in_vector2_scale,
+                                           int right_shifts,
+                                           int16_t* out_vector,
+                                           int length) {
   int i = 0;
   int round_value = (1 << right_shifts) >> 1;
 
@@ -173,4 +167,3 @@ int WebRtcSpl_ScaleAndAddVectorsWithRound(const int16_t* in_vector1,
 
   return 0;
 }
-#endif
