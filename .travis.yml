@@ -4,9 +4,11 @@ compiler:
   - clang
   - gcc
 
-script:
-  - mkdir build && cd build && ./configure && make -j2 V=1
-  - mkdir build && cd build && cmake .. && make -j2 VERBOSE=1
+env:
+  - AUTOTOOLS=1
+  - CMAKE=1
+
+script: ./.travis.sh
 
 branches:
   only:
