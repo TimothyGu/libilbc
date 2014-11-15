@@ -1,0 +1,2 @@
+/* Define if pthreads is available */
+#cmakedefine WEBRTC_POSIX 1
