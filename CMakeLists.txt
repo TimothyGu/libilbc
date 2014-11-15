@@ -1,4 +1,5 @@
 # Copyright (c) 2012  Jeroen Dekkers <jeroen@dekkers.ch>
+# Copyright (c) 2014  Tiancheng "Timothy" Gu <timothygu99@gmail.com>
 #
 # Permission to use, copy, modify, and/or distribute this software for
 # any purpose with or without fee is hereby granted, provided that the
