@@ -40,8 +40,6 @@
     ((int32_t) ((int32_t)(a) * (int32_t)(b)))
 #define WEBRTC_SPL_UMUL(a, b) \
     ((uint32_t) ((uint32_t)(a) * (uint32_t)(b)))
-#define WEBRTC_SPL_UMUL_16_16(a, b) \
-    ((uint32_t) (uint16_t)(a) * (uint16_t)(b))
 #define WEBRTC_SPL_UMUL_32_16(a, b) \
     ((uint32_t) ((uint32_t)(a) * (uint16_t)(b)))
 #define WEBRTC_SPL_MUL_16_U16(a, b) \
@@ -89,13 +87,9 @@
 
 // Shifting with negative numbers not allowed
 // We cannot do casting here due to signed/unsigned problem
-#define WEBRTC_SPL_RSHIFT_W16(x, c)     ((x) >> (c))
-#define WEBRTC_SPL_LSHIFT_W16(x, c)     ((x) << (c))
-#define WEBRTC_SPL_RSHIFT_W32(x, c)     ((x) >> (c))
 #define WEBRTC_SPL_LSHIFT_W32(x, c)     ((x) << (c))
 
 #define WEBRTC_SPL_RSHIFT_U32(x, c)     ((uint32_t)(x) >> (c))
-#define WEBRTC_SPL_LSHIFT_U32(x, c)     ((uint32_t)(x) << (c))
 
 #define WEBRTC_SPL_RAND(a) \
     ((int16_t)(WEBRTC_SPL_MUL_16_16_RSFT((a), 18816, 7) & 0x00007fff))
@@ -119,9 +113,6 @@ extern "C" {
 // Note that this function MUST be called in any application that uses SPL
 // functions.
 void WebRtcSpl_Init();
-
-// Get SPL Version
-int16_t WebRtcSpl_get_version(char* version, int16_t length_in_bytes);
 
 int16_t WebRtcSpl_GetScalingSquare(int16_t* in_vector,
                                    int in_vector_length,
@@ -1686,17 +1677,4 @@ void WebRtcSpl_SynthesisQMF(const int16_t* low_band,
 //      - c    : The value of an 32-bit integer.
 //
 // Return Value: The value of a * b + c.
-//
-
-// int16_t WebRtcSpl_get_version(...)
-//
-// This function gives the version string of the Signal Processing Library.
-//
-// Input:
-//      - length_in_bytes : The size of Allocated space (in Bytes) where
-//                          the version number is written to (in string format).
-//
-// Output:
-//      - version         : Pointer to a buffer where the version number is
-//                          written to.
 //

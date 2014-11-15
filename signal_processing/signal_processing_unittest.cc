@@ -41,7 +41,6 @@ TEST_F(SplTest, MacroTest) {
     EXPECT_EQ(-2147483645, WEBRTC_SPL_MUL(a, b));
     EXPECT_EQ(2147483651u, WEBRTC_SPL_UMUL(a, b));
     b = WEBRTC_SPL_WORD16_MAX >> 1;
-    EXPECT_EQ(1073627139u, WEBRTC_SPL_UMUL_16_16(a, b));
     EXPECT_EQ(4294918147u, WEBRTC_SPL_UMUL_32_16(a, b));
     EXPECT_EQ(-49149, WEBRTC_SPL_MUL_16_U16(a, b));
 
@@ -66,13 +65,9 @@ TEST_F(SplTest, MacroTest) {
 
     // Shifting with negative numbers not allowed
     // We cannot do casting here due to signed/unsigned problem
-    EXPECT_EQ(8191, WEBRTC_SPL_RSHIFT_W16(a, 1));
-    EXPECT_EQ(32766, WEBRTC_SPL_LSHIFT_W16(a, 1));
-    EXPECT_EQ(8191, WEBRTC_SPL_RSHIFT_W32(a, 1));
     EXPECT_EQ(32766, WEBRTC_SPL_LSHIFT_W32(a, 1));
 
     EXPECT_EQ(8191u, WEBRTC_SPL_RSHIFT_U32(a, 1));
-    EXPECT_EQ(32766u, WEBRTC_SPL_LSHIFT_U32(a, 1));
 
     EXPECT_EQ(1470, WEBRTC_SPL_RAND(A));
 
@@ -99,7 +94,6 @@ TEST_F(SplTest, InlineTest) {
     int16_t b16 = -17;
     int32_t a32 = 111121;
     int32_t b32 = -1711;
-    char bVersion[8];
 
     EXPECT_EQ(17, WebRtcSpl_GetSizeInBits(a32));
 
@@ -139,8 +133,6 @@ TEST_F(SplTest, InlineTest) {
     a32 = 0x80000000;
     b32 = 0x7fffffff;
     EXPECT_EQ(static_cast<int>(0x80000000), WebRtcSpl_SubSatW32(a32, b32));
-
-    EXPECT_EQ(0, WebRtcSpl_get_version(bVersion, 8));
 }
 
 TEST_F(SplTest, MathOperationsTest) {
