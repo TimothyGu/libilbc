@@ -1,4 +1,0 @@
-# Fails when run under memcheck
-EndToEndTest.CanSwitchToUseAllSsrcs
-EndToEndTest.SendsAndReceivesVP9
-
