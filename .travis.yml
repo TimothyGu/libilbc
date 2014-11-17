@@ -9,7 +9,3 @@ env:
   - CMAKE=1
 
 script: ./.travis.sh
-
-branches:
-  only:
-    - travis
