@@ -17,12 +17,14 @@ aclocal.m4
 autom4te.cache
 compile
 config.h
+config.h.in
 configure
 config.guess
 config.log
 config.status
 config.sub
 depcomp
+.dirstamp
 install-sh
 libtool
 doltcompile
