@@ -1,5 +1,5 @@
-libilbc (1.1.1-1) unstable; urgency=low
+libilbc (2.0.0-1) unstable; urgency=low
 
-  * Initial release (Closes: )
+  * Initial import (Closes: )
 
- -- Jeroen Dekkers <jeroen@dekkers.ch>  Thu, 23 Feb 2012 00:29:55 +0100
+ -- Timothy Gu <timothygu99@gmail.com>  Mon, 17 Nov 2014 21:10:17 -0500
