@@ -11,10 +11,8 @@
 // This file contains platform-specific typedefs and defines.
 // Much of it is derived from Chromium's build/build_config.h.
 
-#ifndef _TYPEDEFS_H
-#define _TYPEDEFS_H
-
-#include "ilbc.h"
+#ifndef WEBRTC_TYPEDEFS_H_
+#define WEBRTC_TYPEDEFS_H_
 
 // Processor architecture detection.  For more info on what's defined, see:
 //   http://msdn.microsoft.com/en-us/library/b0084kay.aspx
@@ -131,4 +129,4 @@ typedef unsigned __int64    uint64_t;
 #define NO_RETURN
 #endif
 
-#endif
+#endif  // WEBRTC_TYPEDEFS_H_
