@@ -149,7 +149,10 @@ set_target_properties(ilbc PROPERTIES VERSION 1.1.1 SOVERSION 1)
 set_target_properties(ilbc PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 target_link_libraries(ilbc ${CMAKE_THREAD_LIBS_INIT})
 
-set(CMAKE_C_FLAGS "-O2 -Wall -Wextra -Werror -fvisibility=hidden -Wno-unused-parameter -fno-strict-aliasing")
+if(${CMAKE_COMPILER_IS_GNUCC})
+    set(CMAKE_C_FLAGS "-O2 -Wall -Wextra -Werror -fvisibility=hidden -Wno-unused-parameter -fno-strict-aliasing")
+endif()
+
 
 set(prefix "${CMAKE_INSTALL_PREFIX}")
 set(exec_prefix "${prefix}")
