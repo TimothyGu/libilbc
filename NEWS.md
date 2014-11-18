@@ -9,3 +9,5 @@ Changes in 2.0.0 (2014-11-17)
 - CMake now uses BUILD_SHARED_LIBS to determine the type of library to build.
 - CMake installation paths on some 64-bit systems using `lib64/` are
   corrected.
+- Git metadata for merging from upstream is added for easier merging.
+- Travis CI support is added.
