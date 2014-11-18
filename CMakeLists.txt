@@ -17,6 +17,9 @@
 
 cmake_minimum_required(VERSION 2.8)
 
+option(BUILD_SHARED_LIBS "Build a shared library instead of a static one"
+       ON)
+
 find_package(Threads)
 
 if(CMAKE_USE_WIN32_THREADS_INIT)
@@ -142,14 +145,10 @@ set(ilbc_source_files
     signal_processing/sqrt_of_one_minus_x_squared.c
     signal_processing/vector_scaling_operations.c)
 
-add_library(ilbc SHARED ${ilbc_source_files})
+add_library(ilbc ${ilbc_source_files})
 set_target_properties(ilbc PROPERTIES VERSION 1.1.1 SOVERSION 1)
 set_target_properties(ilbc PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 target_link_libraries(ilbc ${CMAKE_THREAD_LIBS_INIT})
-
-add_library(ilbc-static STATIC ${ilbc_source_files})
-set_target_properties(ilbc-static PROPERTIES OUTPUT_NAME "ilbc")
-set_target_properties(ilbc-static PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
 set(CMAKE_C_FLAGS "-O2 -Wall -Wextra -Werror -fvisibility=hidden -Wno-unused-parameter -fno-strict-aliasing")
 
@@ -166,4 +165,7 @@ endif()
 configure_file(libilbc.pc.in libilbc.pc @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libilbc.pc DESTINATION ${libdir}/pkgconfig)
 install(FILES ilbc/interface/ilbc.h DESTINATION ${includedir})
-install(TARGETS ilbc ilbc-static DESTINATION ${libdir})
+install(TARGETS ilbc
+        ARCHIVE DESTINATION ${libdir}
+        LIBRARY DESTINATION ${libdir}
+        RUNTIME DESTINATION bin)
