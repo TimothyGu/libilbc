@@ -36,8 +36,7 @@ else()
     set(PTHREAD_LIBS ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmakein
-               ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+configure_file(config.h.cmakein config.h   @ONLY)
 
 include_directories(. ilbc/interface signal_processing/include
                     ${CMAKE_CURRENT_BINARY_DIR})
