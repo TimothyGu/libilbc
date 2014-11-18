@@ -9,7 +9,7 @@
 @
 
 @ cross_correlation_neon.s
-@ This file contains the function WebRtcSpl_CrossCorrelation(),
+@ This file contains the function WebRtcSpl_CrossCorrelationNeon(),
 @ optimized for ARM Neon platform.
 @
 @ Reference Ccode at end of this file.
@@ -29,24 +29,18 @@
 @ r7: Total iteration of LOOP_DIM_SEQ_RESIDUAL
 @ r8, r9, r10, r11, r12: scratch
 
-.arch armv7-a
-.fpu neon
+#include "webrtc/system_wrappers/interface/asm_defines.h"
 
+GLOBAL_FUNCTION WebRtcSpl_CrossCorrelationNeon
 .align  2
-.global WebRtcSpl_CrossCorrelation
-
-WebRtcSpl_CrossCorrelation:
-
-.fnstart
-
-.save {r4-r11}
+DEFINE_FUNCTION WebRtcSpl_CrossCorrelationNeon
   push {r4-r11}
 
   @ Put the shift value (-right_shifts) into a Neon register.
   ldrsh r10, [sp, #36]
   rsb r10, r10, #0
   mov r8, r10, asr #31
-  vmov.32 d16, r10, r8
+  vmov d16, r10, r8
 
   @ Initialize loop counters.
   and r7, r3, #7              @ inner_loop_len2 = dim_seq % 8;
@@ -63,7 +57,7 @@ LOOP_DIM_CROSS_CORRELATION:
 
 LOOP_DIM_SEQ:
   vld1.16 {d20, d21}, [r6]!   @ seq1_ptr
-  vld1.16 {d22, d23}, [r5]!   @ seq2_ptr 
+  vld1.16 {d22, d23}, [r5]!   @ seq2_ptr
   subs r8, r8, #1
   vmull.s16 q12, d20, d22
   vmull.s16 q13, d21, d23
@@ -105,30 +99,27 @@ POST_LOOP_DIM_SEQ_RESIDUAL:   @ Sum the results up and do the shift.
   pop {r4-r11}
   bx  lr
 
-.fnend
-
-
 @ TODO(kma): Place this piece of reference code into a C code file.
-@ void WebRtcSpl_CrossCorrelation(WebRtc_Word32* cross_correlation,
-@                                 WebRtc_Word16* seq1,
-@                                 WebRtc_Word16* seq2,
-@                                 WebRtc_Word16 dim_seq,
-@                                 WebRtc_Word16 dim_cross_correlation,
-@                                 WebRtc_Word16 right_shifts,
-@                                 WebRtc_Word16 step_seq2) {
+@ void WebRtcSpl_CrossCorrelationNeon(int32_t* cross_correlation,
+@                                     int16_t* seq1,
+@                                     int16_t* seq2,
+@                                     int16_t dim_seq,
+@                                     int16_t dim_cross_correlation,
+@                                     int16_t right_shifts,
+@                                     int16_t step_seq2) {
 @   int i = 0;
 @   int j = 0;
 @   int inner_loop_len1 = dim_seq >> 3;
 @   int inner_loop_len2 = dim_seq - (inner_loop_len1 << 3);
-@ 
+@
 @   assert(dim_cross_correlation > 0);
 @   assert(dim_seq > 0);
-@ 
+@
 @   for (i = 0; i < dim_cross_correlation; i++) {
 @     int16_t *seq1_ptr = seq1;
 @     int16_t *seq2_ptr = seq2 + (step_seq2 * i);
 @     int64_t sum = 0;
-@ 
+@
 @     for (j = inner_loop_len1; j > 0; j -= 1) {
 @       sum += WEBRTC_SPL_MUL_16_16(*seq1_ptr, *seq2_ptr);
 @       seq1_ptr++;
@@ -155,14 +146,14 @@ POST_LOOP_DIM_SEQ_RESIDUAL:   @ Sum the results up and do the shift.
 @       seq1_ptr++;
 @       seq2_ptr++;
 @     }
-@ 
+@
 @     // Calculate the rest of the samples.
 @     for (j = inner_loop_len2; j > 0; j -= 1) {
 @       sum += WEBRTC_SPL_MUL_16_16(*seq1_ptr, *seq2_ptr);
 @       seq1_ptr++;
 @       seq2_ptr++;
 @     }
-@ 
+@
 @     *cross_correlation++ = (int32_t)(sum >> right_shifts);
 @   }
 @ }

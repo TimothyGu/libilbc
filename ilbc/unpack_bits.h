@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2011 The WebRTC project authors. All Rights Reserved.
+ *  Copyright (c) 2012 The WebRTC project authors. All Rights Reserved.
  *
  *  Use of this source code is governed by a BSD-style license
  *  that can be found in the LICENSE file in the root of the source
@@ -25,10 +25,10 @@
  *  unpacking of bits from bitstream, i.e., vector of bytes
  *---------------------------------------------------------------*/
 
-WebRtc_Word16 WebRtcIlbcfix_UnpackBits( /* (o) "Empty" frame indicator */
-    WebRtc_UWord16 *bitstream,   /* (i) The packatized bitstream */
+int16_t WebRtcIlbcfix_UnpackBits( /* (o) "Empty" frame indicator */
+    const uint16_t *bitstream,    /* (i) The packatized bitstream */
     iLBC_bits *enc_bits,  /* (o) Paramerers from bitstream */
-    WebRtc_Word16 mode     /* (i) Codec mode (20 or 30) */
+    int16_t mode     /* (i) Codec mode (20 or 30) */
                                         );
 
 #endif

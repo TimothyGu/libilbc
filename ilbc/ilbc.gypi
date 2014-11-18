@@ -10,16 +10,18 @@
   'targets': [
     {
       'target_name': 'iLBC',
-      'type': '<(library)',
+      'type': 'static_library',
       'dependencies': [
-        '<(webrtc_root)/common_audio/common_audio.gyp:signal_processing',
+        '<(webrtc_root)/common_audio/common_audio.gyp:common_audio',
       ],
       'include_dirs': [
         'interface',
+        '<(webrtc_root)',
       ],
       'direct_dependent_settings': {
         'include_dirs': [
           'interface',
+          '<(webrtc_root)',
         ],
       },
       'sources': [
@@ -166,8 +168,8 @@
     }, # iLBC
   ], # targets
   'conditions': [
-    ['build_with_chromium==0', {
-      'targets': [  
+    ['include_tests==1', {
+      'targets': [
         {
           'target_name': 'iLBCtest',
           'type': 'executable',
@@ -179,12 +181,6 @@
           ],
         }, # iLBCtest
       ], # targets
-    }], # build_with_chromium
+    }], # include_tests
   ], # conditions
 }
-
-# Local Variables:
-# tab-width:2
-# indent-tabs-mode:nil
-# End:
-# vim: set expandtab tabstop=2 shiftwidth=2:

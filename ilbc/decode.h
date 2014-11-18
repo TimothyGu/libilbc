@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2011 The WebRTC project authors. All Rights Reserved.
+ *  Copyright (c) 2012 The WebRTC project authors. All Rights Reserved.
  *
  *  Use of this source code is governed by a BSD-style license
  *  that can be found in the LICENSE file in the root of the source
@@ -26,11 +26,11 @@
  *---------------------------------------------------------------*/
 
 void WebRtcIlbcfix_DecodeImpl(
-    WebRtc_Word16 *decblock,    /* (o) decoded signal block */
-    WebRtc_UWord16 *bytes,     /* (i) encoded signal bits */
+    int16_t *decblock,    /* (o) decoded signal block */
+    const uint16_t *bytes, /* (i) encoded signal bits */
     iLBC_Dec_Inst_t *iLBCdec_inst, /* (i/o) the decoder state
                                            structure */
-    WebRtc_Word16 mode      /* (i) 0: bad packet, PLC,
+    int16_t mode      /* (i) 0: bad packet, PLC,
                                                                    1: normal */
                            );
 
