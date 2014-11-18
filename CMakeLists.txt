@@ -17,8 +17,19 @@
 
 cmake_minimum_required(VERSION 2.8)
 
+#############################################################################
+## Options
+#############################################################################
+
 option(BUILD_SHARED_LIBS "Build a shared library instead of a static one"
        ON)
+
+#############################################################################
+## Find threading implementation.
+##
+## It is used by the initialization code for thread safety. Only Win32 and
+## pthreads are supported.
+#############################################################################
 
 find_package(Threads)
 
@@ -37,6 +48,11 @@ else()
 endif()
 
 configure_file(config.h.cmakein config.h   @ONLY)
+configure_file(libilbc.pc.in    libilbc.pc @ONLY)
+
+#############################################################################
+## Configure output files
+#############################################################################
 
 include_directories(. ilbc/interface signal_processing/include
                     ${CMAKE_CURRENT_BINARY_DIR})
@@ -144,15 +160,26 @@ set(ilbc_source_files
     signal_processing/sqrt_of_one_minus_x_squared.c
     signal_processing/vector_scaling_operations.c)
 
+#############################################################################
+## Configure output files
+#############################################################################
+
 add_library(ilbc ${ilbc_source_files})
 set_target_properties(ilbc PROPERTIES VERSION 1.1.1 SOVERSION 1)
 set_target_properties(ilbc PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 target_link_libraries(ilbc ${CMAKE_THREAD_LIBS_INIT})
 
+#############################################################################
+## Compiler flags
+#############################################################################
+
 if(${CMAKE_COMPILER_IS_GNUCC})
     set(CMAKE_C_FLAGS "-O2 -Wall -Wextra -Werror -fvisibility=hidden -Wno-unused-parameter -fno-strict-aliasing")
 endif()
 
+###################################################################################################
+## Installation
+###################################################################################################
 
 set(prefix "${CMAKE_INSTALL_PREFIX}")
 set(exec_prefix "${prefix}")
@@ -164,9 +191,10 @@ else()
     set(libdir "${exec_prefix}/lib")
 endif()
 
-configure_file(libilbc.pc.in libilbc.pc @ONLY)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libilbc.pc DESTINATION ${libdir}/pkgconfig)
-install(FILES ilbc/interface/ilbc.h DESTINATION ${includedir})
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libilbc.pc
+        DESTINATION ${libdir}/pkgconfig)
+install(FILES ilbc/interface/ilbc.h
+        DESTINATION ${includedir})
 install(TARGETS ilbc
         ARCHIVE DESTINATION ${libdir}
         LIBRARY DESTINATION ${libdir}
