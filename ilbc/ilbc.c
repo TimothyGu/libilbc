@@ -16,6 +16,7 @@
 
 ******************************************************************/
 
+#include "config.h"
 #include "ilbc.h"
 #include "defines.h"
 #include "init_encode.h"
@@ -255,5 +256,5 @@ int16_t WebRtcIlbcfix_NetEqPlc(iLBC_decinst_t *iLBCdec_inst, int16_t *decoded, i
 
 void WebRtcIlbcfix_version(char *version)
 {
-  strcpy((char*)version, "1.1.1");
+  strcpy((char*)version, PACKAGE_VERSION);
 }

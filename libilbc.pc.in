@@ -5,7 +5,7 @@ includedir=@includedir@
 
 Name: libilbc
 Description: Internet Low Bitrate Codec (iLBC) library
-Version: 1.1.1
+Version: @PACKAGE_VERSION@
 Libs: -L${libdir} -lilbc
 Libs.private: @PTHREAD_LIBS@
 Cflags: -I${includedir}/
