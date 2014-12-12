@@ -17,6 +17,8 @@
 
 cmake_minimum_required(VERSION 2.8)
 
+set(PACKAGE_VERSION 2.0.1)
+
 #############################################################################
 ## Options
 #############################################################################
@@ -165,7 +167,7 @@ set(ilbc_source_files
 #############################################################################
 
 add_library(ilbc ${ilbc_source_files})
-set_target_properties(ilbc PROPERTIES VERSION 1.1.1 SOVERSION 2)
+set_target_properties(ilbc PROPERTIES VERSION ${PACKAGE_VERSION} SOVERSION 2)
 set_target_properties(ilbc PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 target_link_libraries(ilbc ${CMAKE_THREAD_LIBS_INIT})
 
