@@ -1,3 +1,11 @@
+Changes in 2.0.1 (2014-12-11)
+-----------------------------
+
+- Update to r7765, cc7755b.
+- Fix crash in programs directly calling Init functions, without first
+  creating a context through constructors.
+- Proper SONAME versioning added, and bumped to libilbc.so.2.
+
 Changes in 2.0.0 (2014-11-17)
 -----------------------------
 
