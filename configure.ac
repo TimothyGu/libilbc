@@ -30,7 +30,7 @@ AC_SUBST(PTHREAD_LIBS)
 # soname version to use
 # goes by ‘current[:revision[:age]]’ with the soname ending up as
 # current.age.revision.
-LIBILBC_VERSION=0:1:0
+LIBILBC_VERSION=2:0:0
 AC_SUBST(LIBILBC_VERSION)
 
 AC_CONFIG_HEADERS([config.h])
