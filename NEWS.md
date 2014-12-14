@@ -1,3 +1,8 @@
+Changes in 2.0.3 (201x-xx-xx)
+-----------------------------
+
+- Update DOLT to latest revision from VLC.
+
 Changes in 2.0.2 (2014-12-14)
 -----------------------------
 
