@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([libilbc], [2.0.1], [iLBC Codec])
+AC_INIT([libilbc], [2.0.2], [iLBC Codec])
 AC_CONFIG_AUX_DIR(.)
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([tar-ustar dist-bzip2 foreign subdir-objects])
@@ -30,7 +30,7 @@ AC_SUBST(PTHREAD_LIBS)
 # soname version to use
 # goes by ‘current[:revision[:age]]’ with the soname ending up as
 # current.age.revision.
-LIBILBC_VERSION=2:0:0
+LIBILBC_VERSION=2:2:0
 AC_SUBST(LIBILBC_VERSION)
 
 AC_CONFIG_HEADERS([config.h])

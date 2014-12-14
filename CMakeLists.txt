@@ -17,7 +17,7 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-set(PACKAGE_VERSION 2.0.1)
+set(PACKAGE_VERSION 2.0.2)
 
 #############################################################################
 ## Options
