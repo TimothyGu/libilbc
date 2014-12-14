@@ -29,6 +29,9 @@ case $host in
 i?86-apple-darwin*)
     pic_options='-fno-common'
     ;;
+*mingw*)
+    pic_options=''
+    ;;
 *)
     dolt_supported=no
     ;;
