@@ -1,3 +1,9 @@
+Changes in 2.0.2 (2014-12-14)
+-----------------------------
+
+- Distribute config.h.cmakein in the release tarball (fixes #14).
+- Distribute and install README.md and NEWS.md.
+
 Changes in 2.0.1 (2014-12-11)
 -----------------------------
 
