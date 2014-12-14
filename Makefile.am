@@ -208,6 +208,7 @@ libilbc_la_SOURCES = \
 
 EXTRA_DIST = \
     $(top_srcdir)/*.txt \
+    $(top_srcdir)/config.h.cmakein \
     $(top_srcdir)/ilbc/OWNERS \
     $(top_srcdir)/ilbc/*.m \
     $(top_srcdir)/ilbc/test/* \
