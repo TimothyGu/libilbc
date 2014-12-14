@@ -215,7 +215,7 @@ DISTCLEANFILES = \
     doltlibtool
 
 EXTRA_DIST = \
-    $(top_srcdir)/*.txt \
+    $(top_srcdir)/CMakeLists.txt \
     $(top_srcdir)/config.h.cmakein \
     $(top_srcdir)/ilbc/OWNERS \
     $(top_srcdir)/ilbc/*.m \
