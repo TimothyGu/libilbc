@@ -210,6 +210,10 @@ dist_doc_DATA = \
     $(top_srcdir)/NEWS.md \
     $(top_srcdir)/README.md
 
+DISTCLEANFILES = \
+    doltcompile \
+    doltlibtool
+
 EXTRA_DIST = \
     $(top_srcdir)/*.txt \
     $(top_srcdir)/config.h.cmakein \
