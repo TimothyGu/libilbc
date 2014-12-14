@@ -218,6 +218,7 @@ EXTRA_DIST = \
     $(top_srcdir)/CMakeLists.txt \
     $(top_srcdir)/config.h.cmakein \
     $(top_srcdir)/ilbc/OWNERS \
+    $(top_srcdir)/ilbc/*.gypi \
     $(top_srcdir)/ilbc/*.m \
     $(top_srcdir)/ilbc/test/* \
     $(top_srcdir)/signal_processing/*_mips.c \
