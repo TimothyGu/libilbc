@@ -20,7 +20,7 @@ How Do I Merge Upstream Changes?
 It is very easy, as I have merged the WebRTC sources to create Git metadata
 for file renames.
 
-    git remote add upstream http://git.chromium.org/external/webrtc.git
+    git remote add upstream https://chromium.googlesource.com/external/webrtc
     git fetch upstream
     git merge upstream/master
 
