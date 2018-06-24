@@ -171,6 +171,9 @@ set_target_properties(ilbc PROPERTIES VERSION ${PACKAGE_VERSION} SOVERSION 2)
 set_target_properties(ilbc PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 target_link_libraries(ilbc ${CMAKE_THREAD_LIBS_INIT})
 
+add_executable(ilbc_test ilbc/test/iLBC_test.c)
+target_link_libraries(ilbc_test ilbc)
+
 #############################################################################
 ## Compiler flags
 #############################################################################
@@ -197,7 +200,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libilbc.pc
         DESTINATION ${libdir}/pkgconfig)
 install(FILES ilbc/interface/ilbc.h
         DESTINATION ${includedir})
-install(TARGETS ilbc
+install(TARGETS ilbc ilbc_test
         ARCHIVE DESTINATION ${libdir}
         LIBRARY DESTINATION ${libdir}
         RUNTIME DESTINATION bin)

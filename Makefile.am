@@ -9,6 +9,8 @@ libilbcinclude_HEADERS = $(top_srcdir)/ilbc/interface/ilbc.h
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libilbc.pc
 
+bin_PROGRAMS = ilbc_test
+
 lib_LTLIBRARIES = libilbc.la
 
 libilbc_la_LDFLAGS = -version-info @LIBILBC_VERSION@ -no-undefined
@@ -205,6 +207,12 @@ libilbc_la_SOURCES = \
     $(ilbc_headers) \
     $(sigproc_sources) \
     $(sigproc_headers)
+
+ilbc_test_SOURCES = \
+    ilbc/test/iLBC_test.c
+
+ilbc_test_LDADD = \
+    libilbc.la
 
 dist_doc_DATA = \
     $(top_srcdir)/NEWS.md \
