@@ -1,5 +1,3 @@
-prefix=@prefix@
-exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
@@ -7,5 +5,4 @@ Name: libilbc
 Description: Internet Low Bitrate Codec (iLBC) library
 Version: @PACKAGE_VERSION@
 Libs: -L${libdir} -lilbc
-Libs.private: @PTHREAD_LIBS@
 Cflags: -I${includedir}/

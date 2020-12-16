@@ -17,15 +17,37 @@ your patch to WebRTC first.
 How Do I Merge Upstream Changes?
 --------------------------------
 
-It is very easy, as I have merged the WebRTC sources to create Git metadata
-for file renames.
+Try
+```
+git remote add upstream https://chromium.googlesource.com/external/webrtc
+git fetch upstream
+git merge upstream/master
+```
 
-    git remote add upstream https://chromium.googlesource.com/external/webrtc
-    git fetch upstream
-    git merge upstream/master
+Delete all directories other than
+* common\_audio/signal\_processing/
+* modules/audio\_coding/codecs/ilbc/
 
-In most cases this will turn out fine. If there are some upstream additions,
-you will have to remove them by hand.
+Cherry pick what's needed from api/ and rtc\_base/. Update the abseil-cpp
+header.
 
 **Always check `git status` before committing the merge** to make sure
 nothing unneeded is added!!!
+
+### Generating ilbc.h
+
+This packaged library exposes a single header: ilbc.h. Past versions of
+upstream WebRTC have this header directly, but this is no longer the case
+starting from version 3.0.0. Here are some instructions for synthesizing
+ilbc.h:
+
+1. Start with modules/audio\_coding/codecs/ilbc/ilbc.h.
+2. Add in the macros and structs from
+   modules/audio\_coding/codecs/ilbc/defines.h. Delete all macros and structs
+   that were not already previously exposed (e.g., all macros under the "PLC"
+   heading and the iLBC\_bits structure).
+3. Add in the function prototypes from
+   * modules/audio\_coding/codecs/ilbc/init\_decode.h
+   * modules/audio\_coding/codecs/ilbc/init\_encode.h
+   * modules/audio\_coding/codecs/ilbc/decode.h
+   * modules/audio\_coding/codecs/ilbc/encode.h

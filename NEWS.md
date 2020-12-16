@@ -1,7 +1,57 @@
-Changes in 2.0.3 (201x-xx-xx)
+Changes in 3.0.0 (2020-xx-xx)
 -----------------------------
 
-- Update DOLT to latest revision from VLC.
+This version of libilbc brings the latest updates from upstream WebRTC code.
+The API is mostly compatible, but has a few cosmetic changes that nevertheless
+require users to adapt.
+
+- Update to latest WebRTC source (r32829, cf8ec1f686).
+
+- A new header is now shipped: ilbd\_export.h. Users should never have to
+  interact with it though.
+
+- Various data structures have been renamed. To continue using the original
+  naming scheme in your own program, you may use the following typedefs:
+  ```c
+  typedef IlbcEncoderInstance iLBC_encinst_t;
+  typedef IlbcDecoderInstance iLBC_decinst_t;
+
+  // RFC 3951-compatible API:
+  typedef IlbcEncoder iLBC_Enc_Inst_t;
+  typedef IlbcDecoder iLBC_Dec_Inst_t;
+  ```
+
+- Some macros for RFC 3951 compatibility has now been removed. You can restore
+  them through:
+  ```c
+  #define initDecode WebRtcIlbcfix_InitDecode
+  #define initEncode WebRtcIlbcfix_InitEncode
+  #define iLBC_decode WebRtcIlbcfix_DecodeImpl
+  #define iLBC_encode WebRtcIlbcfix_EncodeImpl
+  ```
+
+- Many length-like parameters now use the `size_t` type. The following
+  functions and structs are affected:
+
+  * WebRtcIlbcfix\_Encode
+  * WebRtcIlbcfix\_Decode
+  * WebRtcIlbcfix\_Decode20Ms
+  * WebRtcIlbcfix\_Decode30Ms
+  * WebRtcIlbcfix\_DecodePlc
+  * WebRtcIlbcfix\_NetEqPlc
+  * IlbcEncoder (né iLBC\_Enc\_Inst\_t) fields
+    * blockl
+    * nsub
+    * no\_of\_bytes, no\_of\_words
+    * state\_short\_len
+  * IlbcDecoder (né iLBC\_Dec\_Inst\_t) fields
+    * blockl
+    * nsub
+    * no\_of\_bytes, no\_of\_words
+    * state\_short\_len
+    * last\_lag
+    * prevLag
+    * enh\_period
 
 Changes in 2.0.2 (2014-12-14)
 -----------------------------
