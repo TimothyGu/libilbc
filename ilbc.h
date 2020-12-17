@@ -467,6 +467,12 @@ void WebRtcIlbcfix_EncodeImpl(
                                            state */
     );
 
+// Old type names:
+typedef ILBC_DEPRECATED IlbcEncoderInstance iLBC_encinst_t;
+typedef ILBC_DEPRECATED IlbcDecoderInstance iLBC_decinst_t;
+typedef ILBC_DEPRECATED IlbcEncoder iLBC_Enc_Inst_t;
+typedef ILBC_DEPRECATED IlbcDecoder iLBC_Dec_Inst_t;
+
 #ifdef __cplusplus
 }
 #endif

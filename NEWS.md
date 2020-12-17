@@ -3,29 +3,23 @@ Changes in 3.0.0 (2020-xx-xx)
 
 This version of libilbc brings the latest updates from upstream WebRTC code.
 The API is mostly compatible, but has a few cosmetic changes that nevertheless
-require users to adapt.
+require users to adapt. The ABI is not compatible, and the SONAME version has
+been incremented to 3.0.0.
 
-- Update to latest WebRTC source (r32829, cf8ec1f686).
+### Breaking changes
 
-- A new program that allows testing this library is now compiled and installed:
-  ilbc\_test. See the README for some hints on how to use it.
-
-- A new header is now shipped: ilbd\_export.h. Users should never have to
-  interact with it though.
-
-- Various data structures have been renamed. To continue using the original
-  naming scheme in your own program, you may use the following typedefs:
-  ```c
-  typedef IlbcEncoderInstance iLBC_encinst_t;
-  typedef IlbcDecoderInstance iLBC_decinst_t;
-
-  // RFC 3951-compatible API:
-  typedef IlbcEncoder iLBC_Enc_Inst_t;
-  typedef IlbcDecoder iLBC_Dec_Inst_t;
+- Various data structures have been renamed. The original names are kept as
+  typedef'd aliases, but users are encouraged to switch to the new naming
+  scheme.
+  ```
+  iLBC_encinst_t  → IlbcEncoderInstance
+  iLBC_decinst_t  → IlbcDecoderInstance
+  iLBC_Enc_Inst_t → IlbcEncoder
+  iLBC_Dec_Inst_t → IlbcDecoder
   ```
 
-- Some macros for RFC 3951 compatibility has now been removed. You can restore
-  them through:
+- Some deprecated macros for RFC 3951 compatibility has now been removed. You
+  can restore them with:
   ```c
   #define initDecode WebRtcIlbcfix_InitDecode
   #define initEncode WebRtcIlbcfix_InitEncode
@@ -55,6 +49,23 @@ require users to adapt.
     * last\_lag
     * prevLag
     * enh\_period
+
+### Other changes
+
+- Update to latest WebRTC source (r32829, cf8ec1f686).
+
+- A new program that allows testing this library is now compiled and installed:
+  ilbc\_test. See the README for some hints on how to use it.
+
+- A new header is now shipped: ilbd\_export.h. Users should never have to
+  interact with it though.
+
+- New CI has been created using GitHub Actions, covering many platforms:
+  - Ubuntu x86-64 (Ninja and GNU Make)
+  - macOS x86-64 (Ninja and GNU Make)
+  - Windows x86-64 (Visual Studio)
+  - Ubuntu armel, armhf, aarch64, mipsel, mips64el (cross-compiled)
+  - Windows ARM64 (cross-compiled)
 
 Changes in 2.0.2 (2014-12-14)
 -----------------------------
