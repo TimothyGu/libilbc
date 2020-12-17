@@ -7,6 +7,9 @@ require users to adapt.
 
 - Update to latest WebRTC source (r32829, cf8ec1f686).
 
+- A new program that allows testing this library is now compiled and installed:
+  ilbc\_test. See the README for some hints on how to use it.
+
 - A new header is now shipped: ilbd\_export.h. Users should never have to
   interact with it though.
 

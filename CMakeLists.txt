@@ -37,9 +37,7 @@ configure_file(libilbc.pc.in libilbc.pc @ONLY)
 ## Configure input files
 #############################################################################
 
-add_subdirectory(abseil-cpp EXCLUDE_FROM_ALL)
-
-include_directories(. ${CMAKE_CURRENT_BINARY_DIR})
+include_directories(. abseil-cpp ${CMAKE_CURRENT_BINARY_DIR})
 
 set(ilbc_source_files
     modules/audio_coding/codecs/ilbc/abs_quant.c
@@ -215,7 +213,6 @@ endif()
 
 add_library(ilbc ${ilbc_source_files})
 generate_export_header(ilbc)
-target_link_libraries(ilbc absl::meta absl::strings)
 set_target_properties(ilbc PROPERTIES VERSION ${PACKAGE_VERSION} SOVERSION 3)
 set_target_properties(ilbc PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
