@@ -1,3 +1,9 @@
+Changes in 3.0.2 (2020-12-18)
+-----------------------------
+
+Fixed installation from out-of-tree builds. ([#28]) Thanks to Daniel Bermond
+<danielbermond@gmail.com>.
+
 Changes in 3.0.1 (2020-12-18)
 -----------------------------
 
@@ -115,3 +121,5 @@ Changes in 2.0.0 (2014-11-17)
   corrected.
 - Git metadata for merging from upstream is added for easier merging.
 - Travis CI support is added.
+
+[#28]: https://github.com/TimothyGu/libilbc/issues/28
