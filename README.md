@@ -67,9 +67,7 @@ submodule for Git users) so there's no need to install it separately.
    [`cmake --install .`][cmake-install] on CMake 3.15 or later). By default,
    the library gets installed to /usr/local; to tweak the install prefix, set
    `-DCMAKE_INSTALL_PREFIX=<path>` when running `cmake`; see
-   [docs][CMAKE_INSTALL_PREFIX]. (For more info, we use the
-   [GNUInstallDirs](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html)
-   CMake module to determine where things are installed.)
+   [docs][CMAKE_INSTALL_PREFIX].
 
 Supported platforms
 -------------------
@@ -107,6 +105,24 @@ These platforms are known to _not_ work:
 
 All other platforms _may_ work out of the box. If they don't, a simple change
 to rtc\_base/system/arch.h will most likely fix it up.
+
+For packagers
+-------------
+
+There are some additional CMake options available to the fine folks packaging
+this library. For the most part, we use the
+[GNUInstallDirs](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html)
+CMake module to determine where things are installed, which should generally do
+the right thing. If it doesn't, try:
+
+- `-DCMAKE_INSTALL_PREFIX=<dir>` for the prefix (usually defaults to
+  /usr/local)
+- `-DCMAKE_INSTALL_BINDIR=<dir>` for executables and Windows DLLs
+- `-DCMAKE_INSTALL_DOCDIR=<dir>` for various Markdown documentation files
+- `-DCMAKE_INSTALL_INCLUDEDIR=<dir>` for C headers
+- `-DCMAKE_INSTALL_LIBDIR=<dir>` for static libraries (`.a`), Windows DLL
+  import libraries (`.lib`), and non-Windows dynamic libraries (`.so` and
+  `.dylib`)
 
 [BUILD_SHARED_LIBS]: https://cmake.org/cmake/help/latest/variable/BUILD_SHARED_LIBS.html
 [cmake-build]: https://cmake.org/cmake/help/latest/manual/cmake.1.html#build-a-project

@@ -319,14 +319,13 @@ add_custom_target(ilbc_test-sample
 ## Installation
 ###################################################################################################
 
-set(includedir "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
-set(libdir "${CMAKE_INSTALL_FULL_LIBDIR}")
-
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libilbc.pc
-        DESTINATION ${libdir}/pkgconfig)
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 install(FILES ilbc.h ilbc_export.h
-        DESTINATION ${includedir})
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES CONTRIBUTING.md NEWS.md README.md
+        DESTINATION ${CMAKE_INSTALL_DOCDIR})
 install(TARGETS ilbc ilbc_test
-        ARCHIVE DESTINATION ${libdir}
-        LIBRARY DESTINATION ${libdir}
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
