@@ -69,7 +69,7 @@ jobs:
     - name: Check [full ci] annotation
       id: check
       run: |
-        if [ ${{github.event.ref}} == refs/head/main ] ||
+        if [ ${{github.event.ref}} == refs/heads/main ] ||
            curl -H "Accept: application/vnd.github.v3+json" \
                 -H 'Authorization: Bearer ${{secrets.GITHUB_TOKEN}}' \
              https://api.github.com/repos/TimothyGu/libilbc/compare/${{github.event.before}}...${{github.event.after}} |
