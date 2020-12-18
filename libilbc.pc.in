@@ -1,8 +1,8 @@
-libdir=@libdir@
-includedir=@includedir@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
 
 Name: libilbc
 Description: Internet Low Bitrate Codec (iLBC) library
-Version: @PACKAGE_VERSION@
+Version: @PROJECT_VERSION@
 Libs: -L${libdir} -lilbc
 Cflags: -I${includedir}/
