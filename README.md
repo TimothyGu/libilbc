@@ -1,7 +1,7 @@
 libilbc
 =======
 
-[![Build Status](https://travis-ci.org/TimothyGu/libilbc.svg)](https://travis-ci.org/TimothyGu/libilbc)
+![Build Status](https://github.com/TimothyGu/libilbc/workflows/CMake/badge.svg)
 
 This is a packaging-friendly copy of the iLBC codec from the WebRTC project. It
 provides a base for distribution packages and can be used as drop-in
@@ -15,125 +15,104 @@ libilbc requires the following to compile:
 - A C compiler
 - A C++ compiler supporting C++14 or later
 - [CMake](https://cmake.org/)
-- A [CMake-compatible build
-  system](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html);
+- A [CMake-compatible build system][cmake-generators];
   some options are:
   - [Ninja](https://ninja-build.org/) (recommended)
   - [GNU Make](https://www.gnu.org/software/make/) for Unix-like systems
   - [Visual Studio](https://visualstudio.microsoft.com/) for Windows
 
 [Abseil Common C++ Libraries](https://github.com/abseil/abseil-cpp) is also a
-prerequisite, but it is bundled with release tarballs (or provided as a
+prerequisite, but it comes bundled with release tarballs (or provided as a
 submodule for Git users) so there's no need to install it separately.
 
-If you are not using a release tarball, you can clone this repo with:
-```sh
-git clone --depth=1 https://github.com/TimothyGu/libilbc.git
-git submodule update --init
-```
+0. If you are not using a release tarball, you can clone this repo with:
+   ```sh
+   git clone --depth=1 https://github.com/TimothyGu/libilbc.git
+   git submodule update --init
+   ```
 
-### Ninja
+1. **[Generate build files][cmake-generate]:** `cmake .`
 
-```sh
-cmake -G 'Ninja' .
-ninja
-```
+   If you instead want a static library, instead run `cmake
+   -DBUILD_SHARED_LIBS=OFF .` per [CMake docs][BUILD_SHARED_LIBS].
 
-### GNU Make
+2. **[Build it][cmake-build]:** `cmake --build .`
 
-```sh
-cmake -G 'Unix Makefiles' .
-make -j4
-```
+   You should now get a library file (.so, .dylib, .dll, .a, or .lib depending
+   on your platform) as well as a ilbc\_test program.
 
-### Try it out
+3. (optional) **Try it out.** This repo comes a sample.pcm audio file that is
+   in a form ilbc\_test accepts (raw signed 16-bit PCM, mono, sampled at 8000
+   Hz). The following command encodes sample.pcm to encoded.ilbc, and then
+   decode it again to decoded.pcm.
+   ```sh
+   ./ilbc_test 20 sample.pcm encoded.ilbc decoded.pcm
+   ```
+   You can try to play the before/after audio with [mpv][]:
+   ```sh
+   mpv --demuxer=rawaudio --demuxer-rawaudio-rate=8000 --demuxer-rawaudio-channels=1 sample.pcm
+   mpv --demuxer=rawaudio --demuxer-rawaudio-rate=8000 --demuxer-rawaudio-channels=1 decoded.pcm
+   ```
 
-After you've done compiling, try out the ilbc\_test program to see if the
-library works. With this repo comes a sample.pcm audio file that is in a form
-ilbc\_test accepts (raw signed 16-bit PCM, mono, sampled at 8000 Hz).
-```sh
-./ilbc_test 20 sample.pcm encoded.ilbc decoded.pcm
-```
+   You can create your own sample file too. The command I used was:
+   ```sh
+   ffmpeg -f pulse -i default -f s16le -filter:a "pan=1|c0=c0+c1,aresample=8000" sample.pcm
+   ```
+   which gets the audio input from Linux's PulseAudio, and then remixes and
+   resamples it.
 
-You can try to play the before/after audio with [mpv](https://mpv.io/):
-```sh
-mpv --demuxer=rawaudio --demuxer-rawaudio-rate=8000 --demuxer-rawaudio-channels=1 sample.pcm
-# The above should play "hello one two three".
+4. (optional; for Unix-like systems) **Installing.** If you want to install the
+   library and the ilbc\_test utility to system locations, run either `ninja
+   install` or `make install` depending on which build system you chose (or
+   [`cmake --install .`][cmake-install] on CMake 3.15 or later). By default,
+   the library gets installed to /usr/local; to tweak the install prefix, set
+   `-DCMAKE_INSTALL_PREFIX=<path>` when running `cmake`; see
+   [docs][CMAKE_INSTALL_PREFIX]. (For more info, we use the
+   [GNUInstallDirs](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html)
+   CMake module to determine where things are installed.)
 
-mpv --demuxer=rawaudio --demuxer-rawaudio-rate=8000 --demuxer-rawaudio-channels=1 decoded.pcm
-# The above should play "hello one two three" as well, except it has been
-# encoded and decoded using the iLBC codec.
-```
+Supported platforms
+-------------------
 
-You can create your own sample file too. The command I used was:
-```sh
-ffmpeg -f pulse -i default -f s16le -filter:a 'pan=1|c0=c0+c1,aresample=8000' sample.pcm
-```
-which gets the audio input from Linux's PulseAudio, and then remixes and
-resamples it.
+The following platforms are regularly run on CI and are thus supported:
 
-### Installing (Unix-like)
+* Linux
+  * ARMv5–7 (32-bit; soft and hard float)
+  * ARMv8 (64-bit)
+  * PowerPC (little-endian) (64-bit)
+  * MIPS (little-endian) (64-bit)
+  * x86-64
+* macOS
+* Windows
+  * x86-64 with Visual C++ 2019
+  * x86-64 with [clang-cl](https://clang.llvm.org/docs/UsersManual.html#clang-cl)
 
-If you want to install the library to system locations, run either `ninja
-install` or `make install` depending on which build system you chose. By
-default, the library gets installed to /usr/local; to tweak the install prefix,
-set `-DCMAKE_INSTALL_PREFIX=<path>` when running `cmake`; see
-[docs](https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html).
-(For more info, we use the
-[GNUInstallDirs](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html)
-CMake module to determine where things are installed.)
+The following architectures get cross-compiled on CI and thus probably work.
+But we don't know for sure if it actually runs:
 
-Contributing
-------------
+* Linux
+  * MIPS (little-endian) (32-bit)
+  * PowerPC (big-endian) (32/64-bit)
+  * RISC-V (64-bit)
+  * SPARC (64-bit)
+* Windows
+  * ARM64 with Visual C++ 2019
 
-Only bug fixes and upstream merges are allowed. If you would like to fix
-the source code that would benefit upstream as well, please consider sending
-your patch to WebRTC first.
+These platforms are known to _not_ work:
 
-How Do I Merge Upstream Changes?
---------------------------------
+* Linux
+  * MIPS (big-endian) (32-bit)
+* Windows
+  * ARM with Visual C++ 2019 (32-bit)
 
-Try
-```sh
-git remote add upstream https://chromium.googlesource.com/external/webrtc
-git fetch upstream
-git merge upstream/lkgr
-# LKGR = latest known good revision
-# https://chromium.googlesource.com/chromiumos/docs/+/master/glossary.md
-```
+All other platforms _may_ work out of the box. If they don't, a simple change
+to rtc\_base/system/arch.h will most likely fix it up.
 
-Delete all directories other than
-* common\_audio/signal\_processing/
-* modules/audio\_coding/codecs/ilbc/
-
-Cherry pick what's needed from rtc\_base/. Update the abseil-cpp submodule.
-
-**Always check `git status` before committing the merge** to make sure
-nothing unneeded is added!!!
-
-### Changes from upstream
-
-We try to keep the overlaid changes to a minimum. However, here are a few
-changes we had to make:
-* Add the `ILBC_EXPORT` annotation to various functions in headers.
-* Make the following files #include their header:
-  * modules/audio\_coding/codecs/ilbc/decode.c
-  * modules/audio\_coding/codecs/ilbc/encode.c
-
-### Generating ilbc.h
-
-This packaged library exposes a single header: ilbc.h. Past versions of
-upstream WebRTC have this header directly, but this is no longer the case
-starting from version 3.0.0. Here are some instructions for synthesizing
-ilbc.h:
-
-1. Start with modules/audio\_coding/codecs/ilbc/ilbc.h.
-2. Add in the macros and structs from
-   modules/audio\_coding/codecs/ilbc/defines.h. Delete all macros and structs
-   that were not already previously exposed (e.g., all macros under the "PLC"
-   heading and the iLBC\_bits structure).
-3. Add in the function prototypes from
-   * modules/audio\_coding/codecs/ilbc/init\_decode.h
-   * modules/audio\_coding/codecs/ilbc/init\_encode.h
-   * modules/audio\_coding/codecs/ilbc/decode.h
-   * modules/audio\_coding/codecs/ilbc/encode.h
+[BUILD_SHARED_LIBS]: https://cmake.org/cmake/help/latest/variable/BUILD_SHARED_LIBS.html
+[cmake-build]: https://cmake.org/cmake/help/latest/manual/cmake.1.html#build-a-project
+[cmake-install]: https://cmake.org/cmake/help/latest/manual/cmake.1.html#install-a-project
+[cmake-generate]: https://cmake.org/cmake/help/latest/manual/cmake.1.html#generate-a-project-buildsystem
+[cmake-generators]: https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html
+[CMAKE_INSTALL_PREFIX]: https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html
+[GNUInstallDirs]: https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html
+[mpv]: https://mpv.io/

@@ -30,25 +30,28 @@ been incremented to 3.0.0.
 - Many length-like parameters now use the `size_t` type. The following
   functions and structs are affected:
 
-  * WebRtcIlbcfix\_Encode
-  * WebRtcIlbcfix\_Decode
-  * WebRtcIlbcfix\_Decode20Ms
-  * WebRtcIlbcfix\_Decode30Ms
-  * WebRtcIlbcfix\_DecodePlc
-  * WebRtcIlbcfix\_NetEqPlc
-  * IlbcEncoder (né iLBC\_Enc\_Inst\_t) fields
-    * blockl
-    * nsub
-    * no\_of\_bytes, no\_of\_words
-    * state\_short\_len
-  * IlbcDecoder (né iLBC\_Dec\_Inst\_t) fields
-    * blockl
-    * nsub
-    * no\_of\_bytes, no\_of\_words
-    * state\_short\_len
-    * last\_lag
-    * prevLag
-    * enh\_period
+  * `WebRtcIlbcfix_Encode`
+  * `WebRtcIlbcfix_Decode`
+  * `WebRtcIlbcfix_Decode20Ms`
+  * `WebRtcIlbcfix_Decode30Ms`
+  * `WebRtcIlbcfix_DecodePlc`
+  * `WebRtcIlbcfix_NetEqPlc`
+  * `IlbcEncoder` (né `iLBC_Enc_Inst_t`) fields
+    * `blockl`
+    * `nsub`
+    * `no_of_bytes, no_of_words`
+    * `state_short_len`
+  * `IlbcDecoder` (né `iLBC_Dec_Inst_t`) fields
+    * `blockl`
+    * `nsub`
+    * `no_of_bytes, no_of_words`
+    * `state_short_len`
+    * `last_lag`
+    * `prevLag`
+    * `enh_period`
+
+- To remove duplicated work, the Autotools build system has been removed. CMake
+  is now the only option.
 
 ### Other changes
 
