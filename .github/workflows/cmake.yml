@@ -1,0 +1,328 @@
+name: CMake
+
+on: [push]
+
+jobs:
+  build-fast:
+    strategy:
+      matrix:
+        include:
+        - os: ubuntu-latest
+          generator: Ninja
+          shared: ON
+        - os: ubuntu-latest
+          generator: Unix Makefiles
+          shared: OFF
+
+    runs-on: ${{matrix.os}}
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Install Ninja
+      if: ${{matrix.generator == 'Ninja' && startsWith(matrix.os, 'ubuntu-')}}
+      shell: bash
+      run: |
+        if ! ninja --version 2>/dev/null; then
+          sudo apt-get install ninja-build
+          ninja --version
+        fi
+
+    - name: Show supported generators
+      shell: bash
+      run: cmake --help | sed -n '/Generators/,$p'
+
+    - name: Configure CMake
+      shell: bash
+      env:
+        GENERATOR: ${{matrix.generator}}
+        TOOLSET: ${{matrix.toolset}}
+      run: |
+        cmake ${GENERATOR:+-G "$GENERATOR"} ${TOOLSET:+-T "$TOOLSET"} -DBUILD_SHARED_LIBS=${{matrix.shared}} -S "$GITHUB_WORKSPACE" -B '${{runner.workspace}}/build'
+
+    - name: Build
+      run: cmake --build ${{runner.workspace}}/build
+
+    - name: Run ilbc_test
+      shell: bash
+      run: |
+        cmake --build '${{runner.workspace}}/build' -v -t ilbc_test-sample
+        wc -c "$GITHUB_WORKSPACE/sample.pcm"
+        wc -c '${{runner.workspace}}/build/decoded.pcm'
+        cmake -E sha256sum '${{runner.workspace}}/build/decoded.pcm'
+        expect=722ad5f71f80736195669604c20e448618cb03896e4e9869c6291abe5cc5ab8c
+        actual=$(cmake -E sha256sum '${{runner.workspace}}/build/decoded.pcm' | cut -f1 -d' ')
+        if [ "$expect" != "$actual" ]; then
+          echo 'Expected decoded.pcm to have hash'
+          echo "  $expect"
+          echo 'found'
+          echo "  $actual"
+        fi
+
+  check-ci:
+    runs-on: ubuntu-latest
+    outputs:
+      full-ci: ${{steps.check.outputs.all}}
+    steps:
+    - name: Check [full ci] annotation
+      id: check
+      run: |
+        if [ ${{github.event.ref}} == refs/head/master ] ||
+           curl -H "Accept: application/vnd.github.v3+json" \
+                -H 'Authorization: Bearer ${{secrets.GITHUB_TOKEN}}' \
+             https://api.github.com/repos/TimothyGu/libilbc/compare/${{github.event.before}}...${{github.event.after}} |
+             jq -r '[.commits[].commit.message] | join(" ")' |
+             grep -Fq '[full ci]'
+        then
+          echo "::set-output name=all::true"
+          echo "Running full CI"
+        else
+          echo "::set-output name=all::false"
+          echo "Only running fast CI"
+        fi
+
+  build:
+    strategy:
+      matrix:
+        include:
+        - os: macos-latest
+          generator: Ninja
+          shared: OFF
+        - os: macos-latest
+          generator: Unix Makefiles
+          shared: ON
+        - os: windows-latest
+          shared: OFF
+        - os: windows-latest
+          shared: ON
+        - os: windows-latest
+          toolset: ClangCL
+          shared: ON
+
+        # Installing Ninja through Chocolatey is pretty slow...
+        # - os: windows-latest
+        #   generator: Ninja
+
+    runs-on: ${{matrix.os}}
+    needs: [check-ci]
+    if: ${{needs.check-ci.outputs.full-ci == 'true'}}
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Install Ninja (APT)
+      if: ${{matrix.generator == 'Ninja' && startsWith(matrix.os, 'ubuntu-')}}
+      shell: bash
+      run: |
+        if ! ninja --version 2>/dev/null; then
+          sudo apt-get install ninja-build
+          ninja --version
+        fi
+
+    - name: Install Ninja (Homebrew)
+      if: ${{matrix.generator == 'Ninja' && startsWith(matrix.os, 'macos-')}}
+      shell: bash
+      run: |
+        if ! ninja --version 2>/dev/null; then
+          brew install ninja
+          ninja --version
+        fi
+
+    # - name: Install Ninja (Chocolatey)
+    #   if: ${{matrix.generator == 'Ninja' && startsWith(matrix.os, 'windows-')}}
+    #   shell: bash
+    #   run: |
+    #     if ! ninja --version 2>/dev/null; then
+    #       choco install ninja
+    #       ninja --version
+    #     fi
+    #
+    # - uses: ilammy/msvc-dev-cmd@v1
+    #   if: ${{matrix.generator == 'Ninja' && startsWith(matrix.os, 'windows-')}}
+
+    - name: Show supported generators
+      shell: bash
+      run: cmake --help | sed -n '/Generators/,$p'
+
+    - name: Configure CMake
+      shell: bash
+      env:
+        GENERATOR: ${{matrix.generator}}
+        TOOLSET: ${{matrix.toolset}}
+      run: |
+        cmake ${GENERATOR:+-G "$GENERATOR"} ${TOOLSET:+-T "$TOOLSET"} -DBUILD_SHARED_LIBS=${{matrix.shared}} -S "$GITHUB_WORKSPACE" -B '${{runner.workspace}}/build'
+
+    - name: Build
+      run: cmake --build ${{runner.workspace}}/build
+
+    - name: Run ilbc_test
+      shell: bash
+      run: |
+        cmake --build '${{runner.workspace}}/build' -v -t ilbc_test-sample
+        wc -c "$GITHUB_WORKSPACE/sample.pcm"
+        wc -c '${{runner.workspace}}/build/decoded.pcm'
+        cmake -E sha256sum '${{runner.workspace}}/build/decoded.pcm'
+        expect=722ad5f71f80736195669604c20e448618cb03896e4e9869c6291abe5cc5ab8c
+        actual=$(cmake -E sha256sum '${{runner.workspace}}/build/decoded.pcm' | cut -f1 -d' ')
+        if [ "$expect" != "$actual" ]; then
+          echo 'Expected decoded.pcm to have hash'
+          echo "  $expect"
+          echo 'found'
+          echo "  $actual"
+        fi
+
+  cross-compile:
+    strategy:
+      matrix:
+        include:
+        # For the `docker` key, check https://github.com/docker-library/official-images#architectures-other-than-amd64
+        - os: ubuntu-latest
+          target:
+            name: Linux # uname -s
+            processor: aarch64 # uname -m
+            triplet: aarch64-linux-gnu
+          docker: arm64v8/debian
+          shared: ON
+        - os: ubuntu-latest
+          target:
+            name: Linux # uname -s
+            processor: armv7l # uname -m
+            triplet: arm-linux-gnueabi
+          docker: arm32v5/debian
+          shared: ON
+        - os: ubuntu-latest
+          target:
+            name: Linux # uname -s
+            processor: armv7l # uname -m
+            triplet: arm-linux-gnueabihf
+          docker: arm32v7/debian
+          shared: ON
+        # Not supported by upstream
+        # - os: ubuntu-latest
+        #   target:
+        #     name: Linux # uname -s
+        #     processor: mips # uname -m
+        #     triplet: mips-linux-gnu
+        #   shared: ON
+        - os: ubuntu-latest
+          target:
+            name: Linux # uname -s
+            processor: mipsel # uname -m
+            triplet: mipsel-linux-gnu
+          shared: ON
+        - os: ubuntu-latest
+          target:
+            name: Linux # uname -s
+            processor: mips64 # uname -m
+            triplet: mips64el-linux-gnuabi64
+          docker: mips64le/debian
+          shared: ON
+        - os: ubuntu-latest
+          target:
+            name: Linux # uname -s
+            processor: riscv64 # uname -m
+            triplet: riscv64-linux-gnu
+          shared: ON
+        - os: ubuntu-latest
+          target:
+            name: Linux # uname -s
+            processor: sparc64 # uname -m
+            triplet: sparc64-linux-gnu
+          shared: ON
+        - os: ubuntu-latest
+          target:
+            name: Linux # uname -s
+            processor: ppc # uname -m
+            triplet: powerpc-linux-gnu
+          shared: ON
+        - os: ubuntu-latest
+          target:
+            name: Linux # uname -s
+            processor: ppc64 # uname -m
+            triplet: powerpc64-linux-gnu
+          shared: ON
+        - os: ubuntu-latest
+          target:
+            name: Linux # uname -s
+            processor: ppc64le # uname -m
+            triplet: powerpc64le-linux-gnu
+          docker: ppc64le/debian
+          shared: ON
+        - os: windows-latest
+          target:
+            platform: ARM64
+          shared: ON
+        # Not supported by upstream
+        # - os: windows-latest
+        #   target:
+        #     platform: ARM
+        #   shared: ON
+
+    runs-on: ${{matrix.os}}
+    needs: [check-ci]
+    if: ${{needs.check-ci.outputs.full-ci == 'true'}}
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Install Linux cross compiler
+      if: ${{startsWith(matrix.os, 'ubuntu-')}}
+      shell: bash
+      run: |
+        sudo apt-get install gcc-${{matrix.target.triplet}} g++-${{matrix.target.triplet}}
+
+    - name: Show supported generators
+      shell: bash
+      run: cmake --help | sed -n '/Generators/,$p'
+
+    - name: Configure CMake (Linux-type)
+      if: ${{startsWith(matrix.os, 'ubuntu-')}}
+      shell: bash
+      run: |
+        cmake \
+          -DBUILD_SHARED_LIBS=${{matrix.shared}} \
+          -DCMAKE_SYSTEM_NAME=${{matrix.target.name}} \
+          -DCMAKE_SYSTEM_PROCESSOR=${{matrix.target.processor}} \
+          -DCMAKE_C_COMPILER=${{matrix.target.triplet}}-gcc \
+          -DCMAKE_CXX_COMPILER=${{matrix.target.triplet}}-g++ \
+          -S "$GITHUB_WORKSPACE" -B '${{runner.workspace}}/build'
+
+    - name: Configure CMake (Windows-type)
+      if: ${{startsWith(matrix.os, 'windows-')}}
+      shell: bash
+      run: |
+        cmake \
+          -DBUILD_SHARED_LIBS=${{matrix.shared}} \
+          -DCMAKE_GENERATOR_PLATFORM=${{matrix.target.platform}} \
+          -S "$GITHUB_WORKSPACE" -B '${{runner.workspace}}/build'
+
+    - name: Build
+      run: cmake --build ${{runner.workspace}}/build
+
+    - name: Run QEMU
+      if: ${{matrix.docker}}
+      run: |
+        docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+        docker run --rm \
+          -v "$GITHUB_WORKSPACE:/src:ro" \
+          -v '${{runner.workspace}}/build:/build:rw' \
+          --entrypoint /bin/bash \
+          ${{matrix.docker}} \
+          -c 'uname -m && LD_LIBRARY_PATH=/build /build/ilbc_test 20 /src/sample.pcm /build/encoded.ilbc /build/decoded.pcm'
+        wc -c "$GITHUB_WORKSPACE/sample.pcm"
+        wc -c '${{runner.workspace}}/build/decoded.pcm'
+        cmake -E sha256sum '${{runner.workspace}}/build/decoded.pcm'
+        expect=722ad5f71f80736195669604c20e448618cb03896e4e9869c6291abe5cc5ab8c
+        actual=$(cmake -E sha256sum '${{runner.workspace}}/build/decoded.pcm' | cut -f1 -d' ')
+        if [ "$expect" != "$actual" ]; then
+          echo 'Expected decoded.pcm to have hash'
+          echo "  $expect"
+          echo 'found'
+          echo "  $actual"
+        fi

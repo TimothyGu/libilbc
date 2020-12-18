@@ -1,7 +1,84 @@
-Changes in 2.0.3 (201x-xx-xx)
+Changes in 3.0.0 (2020-xx-xx)
 -----------------------------
 
-- Update DOLT to latest revision from VLC.
+This version of libilbc brings the latest updates from upstream WebRTC code.
+The API is mostly compatible, but has a few cosmetic changes that may
+nevertheless require users to adapt. Users can use the new
+`LIBILBC_VERSION_MAJOR` macro to distinguish this release from previous
+releases. The ABI is not compatible, and the SONAME version has been
+incremented to 3.0.0.
+
+### Breaking changes
+
+- Various data structures have been renamed. The original names are kept as
+  typedef'd aliases, but users are encouraged to switch to the new naming
+  scheme.
+  ```
+  iLBC_encinst_t  → IlbcEncoderInstance
+  iLBC_decinst_t  → IlbcDecoderInstance
+  iLBC_Enc_Inst_t → IlbcEncoder
+  iLBC_Dec_Inst_t → IlbcDecoder
+  ```
+
+- Some deprecated macros for RFC 3951 compatibility has now been removed. You
+  can restore them with:
+  ```c
+  #define initDecode WebRtcIlbcfix_InitDecode
+  #define initEncode WebRtcIlbcfix_InitEncode
+  #define iLBC_decode WebRtcIlbcfix_DecodeImpl
+  #define iLBC_encode WebRtcIlbcfix_EncodeImpl
+  ```
+
+- Many length-like parameters now use the `size_t` type. The following
+  functions and structs are affected:
+
+  * `WebRtcIlbcfix_Encode`
+  * `WebRtcIlbcfix_Decode`
+  * `WebRtcIlbcfix_Decode20Ms`
+  * `WebRtcIlbcfix_Decode30Ms`
+  * `WebRtcIlbcfix_DecodePlc`
+  * `WebRtcIlbcfix_NetEqPlc`
+  * `IlbcEncoder` (né `iLBC_Enc_Inst_t`) fields
+    * `blockl`
+    * `nsub`
+    * `no_of_bytes, no_of_words`
+    * `state_short_len`
+  * `IlbcDecoder` (né `iLBC_Dec_Inst_t`) fields
+    * `blockl`
+    * `nsub`
+    * `no_of_bytes, no_of_words`
+    * `state_short_len`
+    * `last_lag`
+    * `prevLag`
+    * `enh_period`
+
+- To remove duplicated work, the Autotools build system has been removed. CMake
+  is now the only option.
+
+### Other changes
+
+- Update to latest WebRTC source (r32829, cf8ec1f686).
+
+- A new program that allows testing this library is now compiled and installed:
+  ilbc\_test. See the README for some hints on how to use it.
+
+- A new header is now shipped: ilbc\_export.h. Users should never have to
+  interact with it though.
+
+- ilbc.h now includes version macros:
+  ```c
+  #define LIBILBC_VERSION_MAJOR 3
+  #define LIBILBC_VERSION_MINOR 0
+  #define LIBILBC_VERSION_PATCH 0
+  ```
+
+- New CI has been created using GitHub Actions, covering many platforms:
+   - Ubuntu x86-64 (Ninja and GNU Make)
+   - macOS x86-64 (Ninja and GNU Make)
+   - Windows x86-64 (Visual Studio)
+   - Ubuntu aarch64, armel, armhf, mipsel, mips64el, ppc, ppc64, ppc64le,
+     riscv64, sparc64 (cross-compiled)
+   - Windows ARM64 (cross-compiled)
 
 Changes in 2.0.2 (2014-12-14)
 -----------------------------
