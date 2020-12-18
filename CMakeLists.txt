@@ -17,13 +17,15 @@
 
 cmake_minimum_required(VERSION 3.5)
 
-project(libilbc C CXX)
+project(libilbc
+        VERSION 3.0.0
+        DESCRIPTION "WebRTC's implementation of the Internet Low Bitrate Codec (iLBC)"
+        HOMEPAGE_URL "https://github.com/TimothyGu/libilbc"
+        LANGUAGES C CXX)
 
 include(CheckCSourceCompiles)
 include(GNUInstallDirs)
 include(GenerateExportHeader)
-
-set(PACKAGE_VERSION 3.0.0-dev)
 
 #############################################################################
 ## Options
@@ -306,7 +308,7 @@ endif()
 
 add_library(ilbc ${ilbc_source_files})
 generate_export_header(ilbc)
-set_target_properties(ilbc PROPERTIES VERSION ${PACKAGE_VERSION} SOVERSION 3)
+set_target_properties(ilbc PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION 3)
 set_target_properties(ilbc PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
 add_executable(ilbc_test modules/audio_coding/codecs/ilbc/test/iLBC_test.c)

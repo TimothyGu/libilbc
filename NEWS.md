@@ -1,4 +1,4 @@
-Changes in 3.0.0 (2020-xx-xx)
+Changes in 3.0.0 (2020-12-18)
 -----------------------------
 
 This version of libilbc brings the latest updates from upstream WebRTC code.
