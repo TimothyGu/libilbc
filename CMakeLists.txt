@@ -18,7 +18,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(libilbc
-        VERSION 3.0.0
+        VERSION 3.0.1
         DESCRIPTION "WebRTC's implementation of the Internet Low Bitrate Codec (iLBC)"
         HOMEPAGE_URL "https://github.com/TimothyGu/libilbc"
         LANGUAGES C CXX)
