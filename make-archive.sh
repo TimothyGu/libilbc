@@ -22,7 +22,7 @@ cur=$(pwd)
 {
   git grep --cached -l ''
   git submodule foreach --recursive --quiet 'git ls-files --with-tree="$sha1" | sed "s#^#$path/#"' | grep -v 'testdata\|_test\.cc$'
-} | xargs -I{} cp -a {} $out
+} | xargs -I{} cp --parents -a {} $out
 
 cd $tmpdir
 
