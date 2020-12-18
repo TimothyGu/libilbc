@@ -467,6 +467,11 @@ void WebRtcIlbcfix_EncodeImpl(
                                            state */
     );
 
+// Version macros
+#define LIBILBC_VERSION_MAJOR 3
+#define LIBILBC_VERSION_MINOR 0
+#define LIBILBC_VERSION_PATCH 0
+
 // Old type names:
 typedef ILBC_DEPRECATED IlbcEncoderInstance iLBC_encinst_t;
 typedef ILBC_DEPRECATED IlbcDecoderInstance iLBC_decinst_t;
