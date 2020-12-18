@@ -6,6 +6,8 @@ if [ -z "$version" ]; then
   exit 1
 fi
 
+GPG_SIGNING_KEY=-u 7FE6B095B582B0D4!
+
 set -ex
 
 git clean -fxd
@@ -30,5 +32,15 @@ tar -cf $cur/libilbc-$version.tar libilbc-$version
 zstd -19 $cur/libilbc-$version.tar
 gzip -9 $cur/libilbc-$version.tar
 zip -r -9 $cur/libilbc-$version.zip libilbc-$version
+
+cd -
+
+for f in libilbc-$version.*; do
+  gpg -ab $GPG_SIGNING_KEY $f
+done
+
+sha256sum libilbc-$version.*
+sha512sum libilbc-$version.*
+b2sum libilbc-$version.*
 
 rm -rf $tmpdir
