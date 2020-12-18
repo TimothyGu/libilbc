@@ -6,7 +6,7 @@ if [ -z "$version" ]; then
   exit 1
 fi
 
-GPG_SIGNING_KEY=-u 7FE6B095B582B0D4!
+GPG_SIGNING_KEY='-u 7FE6B095B582B0D4!'
 
 set -ex
 
