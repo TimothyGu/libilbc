@@ -12,6 +12,7 @@ install_manifest.txt
 
 ilbc_export.h
 ilbc_test
+ilbc_test2
 
 # From upstream
 *.DS_Store

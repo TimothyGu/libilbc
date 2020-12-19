@@ -3,6 +3,32 @@ name: CMake
 on: [push]
 
 jobs:
+  check-ci:
+    runs-on: ubuntu-latest
+    outputs:
+      full-ci: ${{steps.check.outputs.all}}
+    steps:
+    - name: Check [full ci] annotation
+      id: check
+      run: |
+        before=${{github.event.before}}
+        if [ -z "$before" -o "$before" == 0000000000000000000000000000000000000000]; then
+          before=main
+        fi
+        if [ ${{github.event.ref}} == refs/heads/main ] ||
+           curl -H "Accept: application/vnd.github.v3+json" \
+                -H 'Authorization: Bearer ${{secrets.GITHUB_TOKEN}}' \
+             https://api.github.com/repos/TimothyGu/libilbc/compare/$before...${{github.event.after}} |
+             jq -r '[.commits[].commit.message] | join(" ")' |
+             grep -Fq '[full ci]'
+        then
+          echo "::set-output name=all::true"
+          echo "Running full CI"
+        else
+          echo "::set-output name=all::false"
+          echo "Only running fast CI"
+        fi
+
   build-fast:
     strategy:
       matrix:
@@ -50,18 +76,28 @@ jobs:
     - name: Run ilbc_test
       shell: bash
       run: |
-        cmake --build '${{runner.workspace}}/build' --config $CONFIG -v -t ilbc_test-sample
+        cmake --build '${{runner.workspace}}/build' --config $CONFIG -v -t ilbc_test-sample ilbc_test2-sample
         wc -c "$GITHUB_WORKSPACE/sample.pcm"
         wc -c '${{runner.workspace}}/build/decoded.pcm'
+        wc -c '${{runner.workspace}}/build/decoded2.pcm'
         cmake -E sha256sum '${{runner.workspace}}/build/decoded.pcm'
+        cmake -E sha256sum '${{runner.workspace}}/build/decoded2.pcm'
+
         expect=722ad5f71f80736195669604c20e448618cb03896e4e9869c6291abe5cc5ab8c
         actual=$(cmake -E sha256sum '${{runner.workspace}}/build/decoded.pcm' | cut -f1 -d' ')
+        actual2=$(cmake -E sha256sum '${{runner.workspace}}/build/decoded2.pcm' | cut -f1 -d' ')
+        exitcode=0
         if [ "$expect" != "$actual" ]; then
           echo 'Expected decoded.pcm to have hash'
           echo "  $expect"
-          echo 'found'
-          echo "  $actual"
+          exitcode=1
         fi
+        if [ "$expect" != "$actual2" ]; then
+          echo 'Expected decoded2.pcm to have hash'
+          echo "  $expect"
+          exitcode=1
+        fi
+        exit $exitcode
 
     - name: Install
       shell: bash
@@ -69,28 +105,6 @@ jobs:
         mkdir '${{runner.workspace}}/install'
         DESTDIR='${{runner.workspace}}/install' cmake --install '${{runner.workspace}}/build' --config $CONFIG
         find '${{runner.workspace}}/install'
-
-  check-ci:
-    runs-on: ubuntu-latest
-    outputs:
-      full-ci: ${{steps.check.outputs.all}}
-    steps:
-    - name: Check [full ci] annotation
-      id: check
-      run: |
-        if [ ${{github.event.ref}} == refs/heads/main ] ||
-           curl -H "Accept: application/vnd.github.v3+json" \
-                -H 'Authorization: Bearer ${{secrets.GITHUB_TOKEN}}' \
-             https://api.github.com/repos/TimothyGu/libilbc/compare/${{github.event.before}}...${{github.event.after}} |
-             jq -r '[.commits[].commit.message] | join(" ")' |
-             grep -Fq '[full ci]'
-        then
-          echo "::set-output name=all::true"
-          echo "Running full CI"
-        else
-          echo "::set-output name=all::false"
-          echo "Only running fast CI"
-        fi
 
   build:
     strategy:
@@ -173,18 +187,28 @@ jobs:
     - name: Run ilbc_test
       shell: bash
       run: |
-        cmake --build '${{runner.workspace}}/build' --config $CONFIG -v -t ilbc_test-sample
+        cmake --build '${{runner.workspace}}/build' --config $CONFIG -v -t ilbc_test-sample ilbc_test2-sample
         wc -c "$GITHUB_WORKSPACE/sample.pcm"
         wc -c '${{runner.workspace}}/build/decoded.pcm'
+        wc -c '${{runner.workspace}}/build/decoded2.pcm'
         cmake -E sha256sum '${{runner.workspace}}/build/decoded.pcm'
+        cmake -E sha256sum '${{runner.workspace}}/build/decoded2.pcm'
+
         expect=722ad5f71f80736195669604c20e448618cb03896e4e9869c6291abe5cc5ab8c
         actual=$(cmake -E sha256sum '${{runner.workspace}}/build/decoded.pcm' | cut -f1 -d' ')
+        actual2=$(cmake -E sha256sum '${{runner.workspace}}/build/decoded2.pcm' | cut -f1 -d' ')
+        exitcode=0
         if [ "$expect" != "$actual" ]; then
           echo 'Expected decoded.pcm to have hash'
           echo "  $expect"
-          echo 'found'
-          echo "  $actual"
+          exitcode=1
         fi
+        if [ "$expect" != "$actual2" ]; then
+          echo 'Expected decoded2.pcm to have hash'
+          echo "  $expect"
+          exitcode=1
+        fi
+        exit $exitcode
 
     - name: Install
       shell: bash
@@ -337,15 +361,25 @@ jobs:
           -v '${{runner.workspace}}/build:/build:rw' \
           --entrypoint /bin/bash \
           ${{matrix.docker}} \
-          -c 'uname -m && LD_LIBRARY_PATH=/build /build/ilbc_test 20 /src/sample.pcm /build/encoded.ilbc /build/decoded.pcm'
+          -c 'uname -m && LD_LIBRARY_PATH=/build /build/ilbc_test 20 /src/sample.pcm /build/encoded.ilbc /build/decoded.pcm && LD_LIBRARY_PATH=/build /build/ilbc_test2 20 /src/sample.pcm /build/encoded2.ilbc /build/decoded2.pcm'
         wc -c "$GITHUB_WORKSPACE/sample.pcm"
         wc -c '${{runner.workspace}}/build/decoded.pcm'
+        wc -c '${{runner.workspace}}/build/decoded2.pcm'
         cmake -E sha256sum '${{runner.workspace}}/build/decoded.pcm'
+        cmake -E sha256sum '${{runner.workspace}}/build/decoded2.pcm'
+
         expect=722ad5f71f80736195669604c20e448618cb03896e4e9869c6291abe5cc5ab8c
         actual=$(cmake -E sha256sum '${{runner.workspace}}/build/decoded.pcm' | cut -f1 -d' ')
+        actual2=$(cmake -E sha256sum '${{runner.workspace}}/build/decoded2.pcm' | cut -f1 -d' ')
+        exitcode=0
         if [ "$expect" != "$actual" ]; then
           echo 'Expected decoded.pcm to have hash'
           echo "  $expect"
-          echo 'found'
-          echo "  $actual"
+          exitcode=1
         fi
+        if [ "$expect" != "$actual2" ]; then
+          echo 'Expected decoded2.pcm to have hash'
+          echo "  $expect"
+          exitcode=1
+        fi
+        exit $exitcode
