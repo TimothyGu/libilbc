@@ -1,3 +1,10 @@
+Changes in 3.0.3 (2020-12-18)
+-----------------------------
+
+Made `WebRtcIlbcfix_InitDecode` an exported symbol on shared library builds.
+([#32]) Thanks again to Daniel Bermond <danielbermond@gmail.com> for noticing
+this.
+
 Changes in 3.0.2 (2020-12-18)
 -----------------------------
 
@@ -123,3 +130,4 @@ Changes in 2.0.0 (2014-11-17)
 - Travis CI support is added.
 
 [#28]: https://github.com/TimothyGu/libilbc/issues/28
+[#32]: https://github.com/TimothyGu/libilbc/issues/32
