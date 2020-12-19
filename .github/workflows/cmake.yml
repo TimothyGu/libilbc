@@ -12,7 +12,7 @@ jobs:
       id: check
       run: |
         before=${{github.event.before}}
-        if [ -z "$before" -o "$before" == 0000000000000000000000000000000000000000]; then
+        if [ -z "$before" -o "$before" == 0000000000000000000000000000000000000000 ]; then
           before=main
         fi
         if [ ${{github.event.ref}} == refs/heads/main ] ||

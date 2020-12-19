@@ -2,13 +2,17 @@
 *.so
 *.so.*
 *.a
+*.o
+*.lib
+*.dylib
 *.cmake
 *.pc
 CMakeCache.txt
 CMakeFiles
 Makefile
 install_manifest.txt
-*.o
+.ninja_deps
+.ninja_log
 
 ilbc_export.h
 ilbc_test
