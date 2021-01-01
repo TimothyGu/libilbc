@@ -52,7 +52,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 if((CMAKE_C_COMPILER_ID STREQUAL "GNU") OR
    (CMAKE_C_COMPILER_ID MATCHES "Clang" AND CMAKE_C_COMPILER_FRONTEND_VARIANT STREQUAL "GNU"))
-    set(CMAKE_C_FLAGS "-Wall -Wextra -Wstrict-prototypes -Wno-unused-parameter -fno-strict-aliasing")
+    set(CMAKE_C_FLAGS "-Wall -Wextra -Wmissing-prototypes -Wstrict-prototypes -Wno-unused-parameter -fno-strict-aliasing")
     set(CMAKE_C_FLAGS_DEBUG "-g")
     set(CMAKE_C_FLAGS_RELEASE "-O2")
 endif()
