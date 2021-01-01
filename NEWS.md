@@ -1,3 +1,10 @@
+Changes in 3.0.4 (2020-12-31)
+-----------------------------
+
+This release contains a fix for [Chromium bug 1158070][crbug1158070]. Also
+upstreamed some local patches to the WebRTC project (CLs
+[198241][webrtccl198241] and [198362][webrtccl198362]).
+
 Changes in 3.0.3 (2020-12-18)
 -----------------------------
 
@@ -131,3 +138,6 @@ Changes in 2.0.0 (2014-11-17)
 
 [#28]: https://github.com/TimothyGu/libilbc/issues/28
 [#32]: https://github.com/TimothyGu/libilbc/issues/32
+[crbug1158070]: https://crbug.com/1158070
+[webrtccl198241]: https://webrtc-review.googlesource.com/c/src/+/198241
+[webrtccl198362]: https://webrtc-review.googlesource.com/c/src/+/198362
