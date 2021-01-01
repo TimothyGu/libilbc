@@ -80,7 +80,7 @@ The following platforms are regularly run on CI and are thus supported:
   * PowerPC (little-endian) (64-bit)
   * MIPS (little-endian) (64-bit)
   * x86-64
-* macOS
+* macOS on x86-64
 * Windows
   * x86-64 with Visual C++ 2019
   * x86-64 with [clang-cl](https://clang.llvm.org/docs/UsersManual.html#clang-cl)
