@@ -21,8 +21,8 @@
 
 #include <stdint.h>
 
+#include "absl/base/attributes.h"
 #include "modules/audio_coding/codecs/ilbc/defines.h"
-#include "rtc_base/system/unused.h"
 
 #include "ilbc_export.h"
 
@@ -32,13 +32,14 @@
 
 // Returns 0 on success, -1 on error.
 ILBC_EXPORT
+ABSL_MUST_USE_RESULT
 int WebRtcIlbcfix_DecodeImpl(
     int16_t* decblock,         /* (o) decoded signal block */
     const uint16_t* bytes,     /* (i) encoded signal bits */
     IlbcDecoder* iLBCdec_inst, /* (i/o) the decoder state
                                            structure */
-    int16_t mode /* (i) 0: bad packet, PLC,
-                        1: normal */
-    ) RTC_WARN_UNUSED_RESULT;
+    int16_t mode               /* (i) 0: bad packet, PLC,
+                                      1: normal */
+);
 
 #endif

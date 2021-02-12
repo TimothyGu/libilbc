@@ -47,6 +47,7 @@ ilbc_test2
 *_proto_cpp.xml
 *~
 .*.sw?
+.cache
 .cipd
 .clangd
 .classpath
