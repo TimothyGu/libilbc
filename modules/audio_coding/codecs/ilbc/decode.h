@@ -31,8 +31,8 @@
  *---------------------------------------------------------------*/
 
 // Returns 0 on success, -1 on error.
-ILBC_EXPORT
 ABSL_MUST_USE_RESULT
+ILBC_EXPORT
 int WebRtcIlbcfix_DecodeImpl(
     int16_t* decblock,         /* (o) decoded signal block */
     const uint16_t* bytes,     /* (i) encoded signal bits */
